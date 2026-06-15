@@ -179,7 +179,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
                   game.designer ? ['Designer', game.designer] : null,
                   game.publisher ? ['Editora', game.publisher] : null,
                   reviewData.recommended_players ? ['Melhor com', reviewData.recommended_players] : null,
-                ].filter(Boolean).map(([key, val]) => (
+                ].filter((item): item is [string, string] => item !== null).map(([key, val]) => (
                   <div key={key} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, padding: '6px 0', borderBottom: '1px solid var(--border)' }}>
                     <span style={{ color: 'var(--muted)' }}>{key}</span>
                     <span style={{ color: 'var(--foreground)', fontWeight: 500 }}>{val}</span>
