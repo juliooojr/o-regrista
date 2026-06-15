@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "reviews": "Reviews",
+    "articles": "Articles",
+    "top10": "Top 10",
+    "howToPlay": "How to Play",
+    "about": "About"
+  },
+  "home": {
+    "highlight": "This week's highlight",
+    "latestReviews": "Latest reviews",
+    "latestArticles": "Latest articles",
+    "howToPlay": "Rules guides"
+  },
+  "badge": {
+    "review": "Review",
+    "article": "Article",
+    "top10": "Top 10",
+    "howToPlay": "How to Play"
+  },
+  "score": {
+    "masterpiece": "Masterpiece",
+    "excellent": "Excellent",
+    "good": "Good",
+    "average": "Average",
+    "avoid": "Avoid"
+  },
+  "meta": {
+    "readTime": "{min} min read",
+    "by": "by"
+  }
+}

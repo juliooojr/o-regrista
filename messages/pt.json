@@ -1,0 +1,32 @@
+{
+  "nav": {
+    "reviews": "Reviews",
+    "articles": "Artigos",
+    "top10": "Top 10",
+    "howToPlay": "Como Jogar",
+    "about": "Sobre"
+  },
+  "home": {
+    "highlight": "Destaque da semana",
+    "latestReviews": "Últimas reviews",
+    "latestArticles": "Últimos artigos",
+    "howToPlay": "Guias de regras"
+  },
+  "badge": {
+    "review": "Review",
+    "article": "Artigo",
+    "top10": "Top 10",
+    "howToPlay": "Como Jogar"
+  },
+  "score": {
+    "masterpiece": "Obra-prima",
+    "excellent": "Excelente",
+    "good": "Bom",
+    "average": "Mediano",
+    "avoid": "Evitar"
+  },
+  "meta": {
+    "readTime": "{min} min de leitura",
+    "by": "por"
+  }
+}
