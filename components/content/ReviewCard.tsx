@@ -12,7 +12,7 @@ export default function ReviewCard({ review, locale }: { review: ReviewFull; loc
         <Image src={review.game.image_url} alt={review.game.name} width={300} height={200} style={{ objectFit: 'cover', width: '100%', borderRadius: 8 }} />
       )}
       <span>{title}</span>
-      <span>{review.score}</span>
+      <span>{review.review.score}</span>
       {excerpt && <p>{excerpt}</p>}
     </article>
   )
