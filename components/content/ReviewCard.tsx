@@ -1,8 +1,8 @@
 import Image from 'next/image'
-import type { Review } from '@/lib/content'
+import type { ReviewFull } from '@/lib/content'
 
 // TODO: Card de review com imagem do jogo, score colorido e badge de tipo
-export default function ReviewCard({ review, locale }: { review: Review; locale: string }) {
+export default function ReviewCard({ review, locale }: { review: ReviewFull; locale: string }) {
   const title = locale === 'en' && review.title_en ? review.title_en : review.title_pt
   const excerpt = locale === 'en' && review.excerpt_en ? review.excerpt_en : review.excerpt_pt
 
