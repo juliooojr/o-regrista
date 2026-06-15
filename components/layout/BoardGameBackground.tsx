@@ -1,5 +1,6 @@
 // Decorative board-game icons scattered in the side margins.
 // Opacity is very low — purely atmospheric, never interferes with content.
+import type { JSX } from 'react'
 
 function DiceIcon() {
   return (
