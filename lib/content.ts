@@ -343,3 +343,19 @@ export const getAllPublishedPosts = cache(async (): Promise<Pick<Post, 'slug' | 
   if (error) console.error('[getAllPublishedPosts]', error)
   return (data ?? []) as Pick<Post, 'slug' | 'type' | 'published_at' | 'updated_at'>[]
 })
+
+// ─── queries — stats ─────────────────────────────────────────────────────────
+
+export const getSiteStats = cache(async (): Promise<{
+  reviews: number
+  guides: number
+  games: number
+}> => {
+  const supabase = createPublicClient()
+  const [{ count: reviews }, { count: guides }, { count: games }] = await Promise.all([
+    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('type', 'review').eq('status', 'published'),
+    supabase.from('posts').select('*', { count: 'exact', head: true }).eq('type', 'how-to-play').eq('status', 'published'),
+    supabase.from('games').select('*', { count: 'exact', head: true }),
+  ])
+  return { reviews: reviews ?? 0, guides: guides ?? 0, games: games ?? 0 }
+})

@@ -1,23 +1,48 @@
 export const revalidate = 300 // ISR: revalida a cada 5 min em produção
+import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { getReviews } from '@/lib/content'
+import { getReviews, getSiteStats } from '@/lib/content'
+import { GameCover, scoreColor, sectionLabel } from '@/components/content/shared'
 
 export const metadata: Metadata = {
   title: 'Sobre | O Regrista',
-  description: 'O Regrista é o projeto pessoal de Julio — análises e guias de boardgames.',
+  description: 'O Regrista é o projeto pessoal de Julio Jr. — análises e guias de boardgames.',
 }
-import { GameCover, formatDate, scoreColor, sectionLabel } from '@/components/content/shared'
 
-const STATS = [
-  { value: '40+', label: 'jogos na coleção' },
-  { value: '12',  label: 'reviews publicadas' },
-  { value: '8',   label: 'guias de regras' },
-  { value: '3',   label: 'anos no hobby' },
+// ─── WhatsApp ────────────────────────────────────────────────────────────────
+const WHATSAPP_URL = 'https://wa.me/5534991907474'
+
+// ─── Anos no hobby (atualizar manualmente) ───────────────────────────────────
+const ANOS_NO_HOBBY = 3
+
+// ─── Avatar — Supabase Storage ───────────────────────────────────────────────
+const AVATAR_URL: string | null = 'https://zvuwwlzlmnpzlwxfzfrd.supabase.co/storage/v1/object/public/media/foto_perfil.png'
+
+// ─── Bio ──────────────────────────────────────────────────────────────────────
+const BIO = [
+  'Sou Julio Jr., morador de Uberlândia e apaixonado por boardgames desde 2015, quando fui apresentado a uma caixa de Catan em um sábado chuvoso. O que começou como um passatempo rapidamente se transformou em uma forma de reunir pessoas, criar histórias e compartilhar experiências ao redor de uma mesa.',
+  'Ao longo dos anos, joguei centenas de partidas, apresentei inúmeros jogos para amigos e vivi uma situação que se repetia com frequência: a expectativa de conhecer um jogo novo muitas vezes dava lugar a longos minutos de leitura de regras, enquanto uma pessoa tentava entender o manual e o restante da mesa aguardava para começar. Sempre achei que deveria existir uma forma melhor de fazer isso.',
+  'Foi nesse contexto que percebi outro padrão. Em praticamente toda partida, em algum momento alguém olhava para mim e perguntava: "mas como funciona mesmo essa regra?". Não sei exatamente quando esse papel passou a ser meu, mas ele ficou.',
+  'Talvez porque eu sempre tenha gostado de entender como as coisas funcionam. Mais do que decorar regras, gosto de encontrar a lógica por trás delas. De transformar um manual de dezenas de páginas em algo simples, claro e fácil de explicar. De pegar sistemas complexos e organizar as informações de forma racional e organizada, permitindo que qualquer pessoa compreenda rapidamente o que realmente importa para começar a jogar.',
+  'Foi dessa característica que nasceu O Regrista.',
+  'Este espaço foi criado para ajudar jogadores a aprender novos jogos, esclarecer dúvidas e encontrar explicações objetivas para regras que, muitas vezes, parecem mais complicadas do que realmente são. Aqui você encontrará resumos, interpretações, dicas e conteúdos produzidos por alguém que acredita que uma boa explicação pode transformar completamente a experiência de uma mesa.',
+  'Porque, no fim das contas, os melhores momentos dos jogos não acontecem lendo o manual. Eles acontecem quando todos entendem a partida e podem focar no que realmente importa: jogar, competir, cooperar e criar memórias ao redor da mesa.',
 ]
 
 export default async function SobrePage() {
-  const latestReviews = await getReviews(3)
+  const [latestReviews, stats] = await Promise.all([
+    getReviews(3),
+    getSiteStats(),
+  ])
+
+  const STATS = [
+    { value: String(stats.games),   label: 'jogos na coleção' },
+    { value: String(stats.reviews), label: 'reviews publicadas' },
+    { value: String(stats.guides),  label: 'guias de regras' },
+    { value: String(ANOS_NO_HOBBY), label: 'anos no hobby' },
+  ]
+
   const container = { maxWidth: 1200, margin: '0 auto', padding: '0 24px' }
 
   return (
@@ -38,34 +63,34 @@ export default async function SobrePage() {
 
           {/* Bio */}
           <div>
-            {/* Avatar placeholder */}
+            {/* Avatar — Supabase Storage ou fallback gradiente */}
             <div style={{
               width: 100, height: 100, borderRadius: '50%', marginBottom: 24,
+              overflow: 'hidden', position: 'relative', flexShrink: 0,
               background: 'linear-gradient(135deg, var(--accent) 0%, #7B5EA7 100%)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontFamily: "'Bebas Neue', sans-serif", fontSize: 36, color: '#fff', letterSpacing: '0.04em',
             }}>
-              JR
+              {AVATAR_URL
+                ? <Image src={AVATAR_URL} alt="Julio Jr." fill style={{ objectFit: 'cover' }} />
+                : 'JR'
+              }
             </div>
 
             <h2 style={{ fontSize: 22, fontWeight: 600, marginBottom: 6, color: 'var(--foreground)' }}>
-              Julio — o Regrista
+              Julio Jr. — o Regrista
             </h2>
             <p style={{ fontSize: 14, color: 'var(--accent)', fontWeight: 500, marginBottom: 20 }}>
-              São Paulo, Brasil
+              Uberlândia, Brasil
             </p>
 
-            {[
-              'Sou chamado de regrista há anos. Esse apelido surgiu porque toda vez que um jogo novo aparece na mesa, sou eu quem explica as regras — com clareza, sem pular partes, e sem enrolar.',
-              'Comecei no hobby com Catan e Ticket to Ride, como todo mundo. Hoje minha coleção tem mais de 40 jogos, com preferência por eurogames e jogos de peso médio-alto que cabem em uma noite.',
-              'O Regrista é o meu espaço para documentar o que jogo, o que penso, e para ajudar quem quer entrar ou se aprofundar no hobby. Tudo em português, com opinião, sem papas na língua.',
-            ].map((p, i) => (
+            {BIO.map((p, i) => (
               <p key={i} style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--foreground)', marginBottom: 18 }}>
                 {p}
               </p>
             ))}
 
-            {/* Stats */}
+            {/* Stats dinâmicos do banco */}
             <div style={{
               display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1,
               background: 'var(--border)', borderRadius: 10, overflow: 'hidden', marginTop: 32,
@@ -113,12 +138,17 @@ export default async function SobrePage() {
               <p style={{ fontSize: 13, color: 'var(--muted)', lineHeight: 1.6, marginBottom: 12 }}>
                 Sugestão de jogo, troca de coleção, ou só quer conversar sobre boardgames?
               </p>
-              <a href="mailto:contato@oregrista.com.br" style={{
-                display: 'block', textAlign: 'center', padding: '10px',
-                background: 'var(--accent)', color: '#fff', borderRadius: 8,
-                fontSize: 13, fontWeight: 600, textDecoration: 'none',
-              }}>
-                Enviar mensagem
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'block', textAlign: 'center', padding: '10px',
+                  background: '#25D366', color: '#fff', borderRadius: 8,
+                  fontSize: 13, fontWeight: 600, textDecoration: 'none',
+                }}
+              >
+                WhatsApp
               </a>
             </div>
           </aside>
