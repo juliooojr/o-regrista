@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 const WHATSAPP_URL = 'https://wa.me/5534991907474'
 
 // ─── Anos no hobby (atualizar manualmente) ───────────────────────────────────
-const ANOS_NO_HOBBY = 3
+const ANOS_NO_HOBBY = 11
+const JOGOS_NA_COLECAO = 75
 
 // ─── Avatar — Supabase Storage ───────────────────────────────────────────────
 const AVATAR_URL: string | null = 'https://zvuwwlzlmnpzlwxfzfrd.supabase.co/storage/v1/object/public/media/foto_perfil.png'
@@ -37,7 +38,7 @@ export default async function SobrePage() {
   ])
 
   const STATS = [
-    { value: String(stats.games),   label: 'jogos na coleção' },
+    { value: String(JOGOS_NA_COLECAO), label: 'jogos na coleção' },
     { value: String(stats.reviews), label: 'reviews publicadas' },
     { value: String(stats.guides),  label: 'guias de regras' },
     { value: String(ANOS_NO_HOBBY), label: 'anos no hobby' },
