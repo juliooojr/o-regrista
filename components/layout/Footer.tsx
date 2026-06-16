@@ -2,7 +2,7 @@
 export default function Footer() {
   return (
     <footer style={{ borderTop: '1px solid var(--border)', padding: '24px', textAlign: 'center', fontSize: 13, color: 'var(--muted)' }}>
-      <p>© {new Date().getFullYear()} O Regrista — por Julio</p>
+      <p>© {new Date().getFullYear()} O Regrista — por Julio Jr.</p>
     </footer>
   )
 }

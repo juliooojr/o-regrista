@@ -1,61 +1,43 @@
 # O Regrista — TASKS
 
-## Próximos passos prioritários
+## [AMANHÃ] Sessão 7
 
-- [ ] Rodar `git init` + push inicial para `juliooojr/o-regrista` (ver comandos abaixo)
-- [ ] Deploy na Vercel com env vars
-- [ ] Imagens reais dos jogos (Supabase Storage ou API BGG)
-- [ ] Admin/CMS para publicar conteúdo (Supabase Studio por ora)
-- [ ] Markdown renderizado no corpo dos posts (biblioteca `marked` ou `remark`)
-- [ ] Top10/página listing conectada ao banco — ✅ feito (sessão 4)
+- [ ] **Top 10 Party Games** — Julio define os jogos → buscar imagens + notas via Chrome MCP no BGG e Ludopedia → inserir no `top10_seed.sql` e executar no Supabase
+- [ ] **Favicon** — converter `favicon.png` (raiz do projeto) para `.ico` e substituir `app/favicon.ico` atual pelo personalizado
 
-## Comandos git (rodar no terminal)
+## Backlog (por prioridade)
 
-```bash
-cd "C:\Users\Julio Jr\Desktop\o-regrista"
-git init
-git add .
-git commit -m "feat: initial commit — scaffold completo + todas as páginas públicas"
-git branch -M main
-git remote add origin https://github.com/juliooojr/o-regrista.git
-git push -u origin main
-```
+- [ ] **Analytics** — pesquisar opções (Plausible, Umami, Vercel Analytics, Google Analytics) — avaliar custo, privacidade, facilidade de integração com Next.js 15
+- [ ] **Deploy na Vercel** — configurar env vars (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`), região `gru1` já configurada em `vercel.json`
+- [ ] **Markdown** — renderizar `content_pt` nas páginas `/como-jogar/[slug]` e `/artigos/[slug]` (avaliar `marked`, `remark` ou `@next/mdx`)
+- [ ] **Admin/CMS** — interface básica para publicar posts sem abrir o Supabase Studio
+- [ ] **PT/EN switcher** — funcional no Header (next-intl `useRouter` + `useLocale`)
+- [ ] **Reviews** — escrever conteúdo real para os jogos do top 10
+- [ ] **Como Jogar** — criar guias reais de regras
 
 ## Concluído
 
+### 2026-06-16 (sessão 6)
+- [x] `app/[locale]/sobre/page.tsx` — bio completa (7 parágrafos do Julio), avatar Supabase Storage, stats dinâmicos (reviews/guias do DB), ANOS_NO_HOBBY=11, JOGOS_NA_COLECAO=75, WhatsApp verde
+- [x] `app/[locale]/top10/page.tsx` — lista "Meu Top 10 de todos os tempos" aberta + sidebar com outras listas
+- [x] `app/[locale]/top10/[slug]/page.tsx` — página dinâmica para qualquer lista
+- [x] `supabase/migrations/002_game_ratings.sql` — colunas `bgg_rating`, `ludopedia_rating`, `ludopedia_url` na tabela `games`
+- [x] `supabase/top10_seed.sql` — 10 jogos com imagens BGG, notas reais (buscadas no BGG e Ludopedia em 16/06), descritivos do Julio
+- [x] `components/content/shared.tsx` — `GameCover` com `objectFit: cover` (preenche quadrado sem tarjas)
+- [x] `components/layout/Footer.tsx` — "por Julio Jr."
+- [x] `lib/content.ts` — `getSiteStats()`, `getTop10BySlug()`, campos `ludopedia_rating`/`ludopedia_url` no tipo `Game`
+
 ### 2026-06-14 (sessão 4)
-- [x] `lib/i18n/navigation.ts` — criado com `createNavigation` do next-intl para navegação locale-aware
-- [x] `components/layout/Header.tsx` — PT/EN switcher funcional via `useLocale` + `useRouter` do next-intl
-- [x] `app/[locale]/artigos/[slug]/page.tsx` — página de detalhe com sidebar de artigos relacionados
-- [x] `app/[locale]/como-jogar/[slug]/page.tsx` — página de detalhe com sidebar de outros guias
-- [x] `app/[locale]/top10/[slug]/page.tsx` — ranking interativo com itens do banco (ChangeBadge, WeightBar)
-- [x] `app/[locale]/top10/page.tsx` — migrado de mock data para dados reais do Supabase
-- [x] `lib/content.ts` — adicionado `getHowToPlayBySlug`, `getArticleBySlug`, `getAllPublishedPosts`
-- [x] `generateMetadata` em todas as rotas públicas (homepage, listagens e páginas de detalhe)
-- [x] `app/sitemap.ts` — dinâmico a partir de `getAllPublishedPosts()` com changeFrequency e priority
+- [x] `lib/i18n/navigation.ts` — `createNavigation` do next-intl
+- [x] `components/layout/Header.tsx` — PT/EN switcher (visual, não funcional ainda)
+- [x] `app/[locale]/artigos/[slug]/page.tsx` — detalhe com sidebar
+- [x] `app/[locale]/como-jogar/[slug]/page.tsx` — detalhe com sidebar
+- [x] `app/[locale]/top10/[slug]/page.tsx` — ranking interativo (ChangeBadge, WeightBar)
+- [x] `generateMetadata` em todas as rotas públicas
+- [x] `app/sitemap.ts` — dinâmico a partir de `getAllPublishedPosts()`
 
-### 2026-06-14 (sessão 3)
-- [x] Diagnosticado e corrigido typo no `.env.local`: URL era `zvuvwwlzlmnpzlwxfzfrd` (errado) → `zvuwwlzlmnpzlwxfzfrd` (correto). Causa do ENOTFOUND.
-- [x] Confirmado: Supabase conectado, projeto Healthy, banco populado com seed.
-
-### 2026-06-14 (sessão 2)
-- [x] Criado projeto Supabase, configurado `.env.local` com URL e anon key
-- [x] `components/content/shared.tsx` migrado de `MockPost` para `Post`/`ReviewFull`
-- [x] `app/[locale]/page.tsx` — homepage async, dados do Supabase
-- [x] `app/[locale]/reviews/page.tsx` — async, `getReviews(50)`
-- [x] `app/[locale]/reviews/[slug]/page.tsx` — async, `getReviewBySlug()`, sub-scores reais
-- [x] `app/[locale]/artigos/page.tsx` — async, `getPostsByType('article')`
-- [x] `app/[locale]/como-jogar/page.tsx` — async, `getHowToPlayGuides()`
-- [x] `app/[locale]/sobre/page.tsx` — async, `getReviews(3)` na sidebar
-- [x] Zero imports de `lib/mock` restantes no projeto
-
-### 2026-06-14 (sessão 1)
-- [x] Scaffold do projeto (Next.js 15, TypeScript, App Router)
-- [x] Dependências instaladas: next-intl, @supabase/ssr, @fontsource/*, tailwindcss v4
-- [x] Arquivos de documentação: BRAIN.md, DESIGN.md, AGENTS.md, CLAUDE.md, SCHEMA.md, TASKS.md
-- [x] i18n configurado: `i18n/request.ts`, `lib/i18n/routing.ts`, `middleware.ts`
-- [x] `messages/pt.json` e `messages/en.json`
-- [x] Todos os componentes de layout e conteúdo criados
-- [x] `lib/content.ts` — tipos TypeScript + queries Supabase iniciais
-- [x] `supabase/migrations/001_initial_schema.sql` + `supabase/seed.sql`
-- [x] `SCHEMA.md` — documentação de todas as tabelas
+### 2026-06-14 (sessões 1–3)
+- [x] Scaffold completo: Next.js 15, TypeScript, App Router, next-intl, Tailwind v4
+- [x] Supabase conectado — migration + seed executados
+- [x] Homepage + Reviews + Artigos + Como Jogar + Sobre — todos conectados ao banco
+- [x] Arquivos de documentação: BRAIN.md, DESIGN.md, AGENTS.md, SCHEMA.md

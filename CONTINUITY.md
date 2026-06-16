@@ -13,41 +13,75 @@ Leia os arquivos de documentação nesta ordem antes de qualquer coisa:
 4. `SCHEMA.md` — banco de dados Supabase
 5. `TASKS.md` — o que está pendente e o que foi feito
 
-## Estado atual (2026-06-14, sessão 3)
+## Estado atual (2026-06-16, sessão 6)
 
-### ✅ Concluído
-- Scaffold completo: Next.js 15, TypeScript, App Router, next-intl, Tailwind v4
-- Supabase conectado e funcionando:
-  - Projeto ID: `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`
-  - `.env.local` com URL e anon key corretos
-  - Migration + seed executados (7 jogos, 10 posts, 5 reviews com sub-scores)
-- Todas as páginas públicas conectadas ao banco (zero mock data):
-  - `app/[locale]/page.tsx` — homepage com featured post + sidebar + reviews + como-jogar
-  - `app/[locale]/reviews/page.tsx` — listagem
-  - `app/[locale]/reviews/[slug]/page.tsx` — detalhe com sub-scores e ficha técnica
-  - `app/[locale]/artigos/page.tsx` — listagem
-  - `app/[locale]/como-jogar/page.tsx` — listagem
-  - `app/[locale]/sobre/page.tsx` — bio + sidebar com últimas reviews
-- Turbopack ativo (`next dev --turbo`)
-- `export const revalidate = 300` em todas as páginas (ISR 5min)
+### ✅ Páginas concluídas
+- **Homepage** — featured post + sidebar + reviews + como-jogar
+- **Reviews** — listagem + detalhe com sub-scores e ficha técnica
+- **Artigos** — listagem + detalhe
+- **Como Jogar** — listagem + detalhe
+- **Sobre** — bio completa (7 parágrafos), avatar via Supabase Storage, stats dinâmicos (reviews/guias do DB, 11 anos no hobby, 75 jogos na coleção), botão WhatsApp verde
+- **Top 10 de Todos os Tempos** — totalmente funcional com 10 jogos reais, badges BGG e Ludopedia com links, notas reais buscadas diretamente nos sites
 
-### Arquitetura de dados
-- Queries: `lib/content.ts` — usa `cache()` do React + `createPublicClient()` de `lib/supabase/public.ts`
-- **NÃO usar** `unstable_cache` (incompatível com `cookies()`)
-- **NÃO importar** de `lib/mock.ts`
+### ✅ Banco de dados (Supabase)
+- Projeto ID: `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`
+- Migration `001_initial_schema.sql` — executada
+- Migration `002_game_ratings.sql` — adiciona `bgg_rating`, `ludopedia_rating`, `ludopedia_url` à tabela `games`
+- `top10_seed.sql` — seed completo do Top 10 de Todos os Tempos (re-executar se dados antigos estiverem errados — o ON CONFLICT atualiza nomes e ratings)
 
-### 🔜 Próximos passos (por prioridade)
-1. PT/EN switcher funcional no Header (`useRouter` + `useLocale` do next-intl)
-2. `/como-jogar/[slug]` — página de detalhe de guia de regras
-3. `/artigos/[slug]` — página de detalhe de artigo
-4. `/top10/[slug]` — ranking interativo com itens do banco
-5. `generateMetadata` em cada rota pública
-6. `app/sitemap.ts` dinâmico
-7. Deploy na Vercel
+### ✅ Dados reais do Top 10 (notas buscadas em 2026-06-16)
+| Jogo | ID BGG | BGG | Ludopedia | Ludopedia URL |
+|------|--------|-----|-----------|---------------|
+| Terraforming Mars | 167791 | 8.3 | 9.0 | /jogo/terraforming-mars |
+| Gloomhaven | 174430 | 8.5 | 9.0 | /jogo/gloomhaven |
+| Brass: Birmingham | 224517 | 8.6 | 9.0 | /jogo/brass-birmingham |
+| Dune: Imperium – Uprising | 397598 | 8.7 | 8.8 | /jogo/dune-imperium-uprising |
+| Ark Nova | 342942 | 8.5 | 9.0 | /jogo/ark-nova |
+| SETI: Search for Extraterrestrial Intelligence | 418059 | 8.4 | 8.9 | /jogo/seti-search-for-extraterrestrial-intelligence |
+| Age of Innovation | 383179 | 8.4 | 8.8 | /jogo/age-of-innovation |
+| La Granja: Deluxe Master Set | 341945 | 8.2 | 8.6 | /jogo/la-granja-deluxe-master-set |
+| Nucleum | 396790 | 8.1 | 8.5 | /jogo/nucleum |
+| Shackleton Base: A Journey to the Moon | 408180 | 8.0 | 8.1 | /jogo/shackleton-base-a-journey-to-the-moon |
 
-## Comando para rodar
+### ✅ Arquitetura relevante
+- `lib/content.ts` — `getTop10BySlug()`, `getSiteStats()`, `getPostsByType()` usando `cache()` + `createPublicClient()`
+- `components/content/shared.tsx` — `GameCover` usa `objectFit: 'cover'` (preenche o quadrado, sem tarjas)
+- `app/[locale]/top10/page.tsx` — lista featured (slug `meu-top-10-de-todos-os-tempos`) + sidebar outras listas
+- `app/[locale]/top10/[slug]/page.tsx` — página dinâmica para qualquer lista Top 10
+- Imagens: URLs do BGG CDN (`cf.geekdo-images.com/__opengraph/`) landscape 1200×630, cortadas no centro com cover
+
+### ⚠️ BGG API
+Retorna 401 (exige Bearer auth) — não usar. Ratings e imagens são salvas no banco. Para buscar dados, usar Chrome MCP nas páginas do BGG e Ludopedia.
+
+## 🔜 Próximas tarefas (por prioridade)
+
+### [AMANHÃ — sessão 7]
+1. **Top 10 Party Games** — Julio vai definir os jogos. Fluxo: buscar no BGG/Ludopedia via Chrome MCP → inserir no banco via `top10_seed.sql`
+2. **Favicon** — `favicon.png` já existe na raiz do projeto. Converter para `.ico` e colocar em `app/favicon.ico` (substituir o atual genérico)
+
+### [Futuro]
+3. Deploy na Vercel com variáveis de ambiente (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`)
+4. Analytics — pesquisar opções (Plausible, Umami, Vercel Analytics, Google Analytics) considerando privacidade e custo
+5. Markdown renderizado nas páginas de detalhe (`/como-jogar/[slug]` e `/artigos/[slug]`)
+6. Admin/CMS básico para publicar posts sem precisar do Supabase Studio
+7. PT/EN switcher funcional no Header
+
+## Comandos
 ```bash
+# Dev local
 cd "C:\Users\Julio Jr\Desktop\o-regrista"
 npm run dev
+# → http://localhost:3000
+
+# Git (rodar no terminal Windows — o sandbox Linux não consegue escrever no .git)
+cd "C:\Users\Julio Jr\Desktop\o-regrista"
+git add .
+git commit -m "mensagem"
+git push
 ```
-Abre em http://localhost:3000
+
+## SQL — ordem de execução se o banco precisar ser refeito
+1. `supabase/migrations/001_initial_schema.sql`
+2. `supabase/migrations/002_game_ratings.sql`
+3. `supabase/seed.sql`
+4. `supabase/top10_seed.sql`

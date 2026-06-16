@@ -31,6 +31,8 @@ export interface Game {
   weight: number | null
   bgg_rating: number | null
   bgg_rank: number | null
+  ludopedia_rating: number | null
+  ludopedia_url: string | null
   categories: string[] | null
   mechanics: string[] | null
   created_at: string
