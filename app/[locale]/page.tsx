@@ -86,12 +86,12 @@ function FeaturedPost({ post, score }: { post: Post; score?: number }) {
   const label = post.title_pt
   return (
     <Link href={postHref(post)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 28, height: '100%' }}>
-      {/* Imagem quadrada — contain para não cortar */}
-      <div style={{ flexShrink: 0, width: 260, height: 260, borderRadius: 8, overflow: 'hidden', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      {/* Imagem quadrada */}
+      <div style={{ flexShrink: 0, width: 260, height: 260, borderRadius: 8, overflow: 'hidden' }}>
         {post.cover_url
           // eslint-disable-next-line @next/next/no-img-element
-          ? <img src={post.cover_url} alt={label} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
-          : <span style={{ fontSize: 12, color: 'var(--muted)', padding: 16, textAlign: 'center' as const }}>{label}</span>
+          ? <img src={post.cover_url} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
+          : <div style={{ width: '100%', height: '100%', background: placeholderColor(label), display: 'flex', alignItems: 'flex-end' }}><span style={{ width: '100%', padding: '6px 8px', background: 'rgba(0,0,0,0.45)', color: '#fff', fontSize: 10, fontWeight: 600 }}>{label}</span></div>
         }
       </div>
 
@@ -171,11 +171,16 @@ function ReviewCard({ post }: { post: ReviewFull }) {
 function HowToPlayCard({ post }: { post: Post }) {
   return (
     <Link href={`/como-jogar/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden', display: 'block', background: 'var(--surface-elevated)' }}>
-      <Cover coverUrl={post.cover_url} label={post.title_pt} height={120} />
+      <Cover coverUrl={post.cover_url} label={post.title_pt} height={180} />
       <div style={{ padding: '12px 14px 14px' }}>
-        <TypeBadge type="how-to-play" />
-        <p style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.4, margin: '8px 0 6px', color: 'var(--foreground)' }}>
-          Como jogar {post.title_pt}
+        <div style={{ marginBottom: 8 }}>
+          <TypeBadge type="how-to-play" />
+        </div>
+        <p style={{ fontSize: 14, fontWeight: 500, lineHeight: 1.4, marginBottom: 6, color: 'var(--foreground)' }}>
+          {post.title_pt}
+        </p>
+        <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.5, marginBottom: 10, overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+          {post.excerpt_pt}
         </p>
         <span style={{ fontSize: 11, color: 'var(--muted-foreground)' }}>
           {post.published_at ? formatDate(post.published_at) : ''} · {post.reading_time} min
@@ -242,7 +247,7 @@ export default async function HomePage() {
               <p style={labelStyle}>Como Jogar — guias de regras</p>
               <Link href="/como-jogar" style={{ fontSize: 12, color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}>Ver todos →</Link>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
               {howToPlayGuides.map(p => <HowToPlayCard key={p.id} post={p} />)}
             </div>
           </div>
