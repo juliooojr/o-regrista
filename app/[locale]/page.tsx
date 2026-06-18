@@ -85,21 +85,26 @@ function postHref(post: Post): string {
 function FeaturedPost({ post, score }: { post: Post; score?: number }) {
   const label = post.title_pt
   return (
-    <Link href={postHref(post)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <Cover coverUrl={post.cover_url} label={label} height={240} />
-      <div style={{ padding: '16px 0 0', display: 'flex', flexDirection: 'column', flex: 1 }}>
+    <Link href={postHref(post)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 28, height: '100%' }}>
+      {/* Imagem quadrada */}
+      <div style={{ flexShrink: 0 }}>
+        <Cover coverUrl={post.cover_url} label={label} width={280} height={280} />
+      </div>
+
+      {/* Texto */}
+      <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12 }}>
           <TypeBadge type={post.type} />
           {score !== undefined && (
-            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 28, fontWeight: 700, color: scoreColor(score), lineHeight: 1 }}>
+            <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 36, fontWeight: 700, color: scoreColor(score), lineHeight: 1 }}>
               {score.toFixed(1)}
             </span>
           )}
         </div>
-        <h2 style={{ fontSize: 20, fontWeight: 500, lineHeight: 1.35, marginBottom: 10, color: 'var(--foreground)' }}>
+        <h2 style={{ fontSize: 22, fontWeight: 600, lineHeight: 1.3, marginBottom: 12, color: 'var(--foreground)' }}>
           {post.title_pt}
         </h2>
-        <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.65, marginBottom: 12 }}>
+        <p style={{ fontSize: 14, color: 'var(--muted)', lineHeight: 1.7, marginBottom: 12 }}>
           {post.excerpt_pt}
         </p>
         <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
