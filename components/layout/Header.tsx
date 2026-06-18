@@ -76,17 +76,12 @@ export default function Header() {
               PT
             </button>
             <span style={{ color: 'var(--border)' }}>|</span>
-            <button
-              onClick={() => switchLocale('en')}
-              style={{
-                background: 'none', border: 'none', cursor: 'pointer', padding: 0,
-                fontWeight: locale === 'en' ? 700 : 400,
-                color: locale === 'en' ? 'var(--foreground)' : 'var(--muted)',
-                fontSize: 12,
-              }}
+            <span
+              title="Em breve"
+              style={{ fontWeight: 400, color: 'var(--border)', fontSize: 12, cursor: 'not-allowed' }}
             >
               EN
-            </button>
+            </span>
           </div>
 
           {/* Theme toggle */}

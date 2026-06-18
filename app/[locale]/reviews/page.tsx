@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 }
 
 const SCORE_RANGES = [
-  { label: 'Obra-prima',  min: 10,  color: '#2d8a55' },
-  { label: 'Muito bom',   min: 9.0, color: '#22c55e' },
-  { label: 'Honesto',     min: 8.0, color: '#ca8a04' },
-  { label: 'Legalzinho',  min: 7.0, color: '#78716c' },
-  { label: 'Quase ruim',  min: 6.0, color: '#9ca3af' },
-  { label: 'Horrível',    min: 0,   color: '#c0392b' },
+  { label: 'Obra-prima', range: '= 10', color: '#2d8a55' },
+  { label: 'Excelente',  range: '≥ 9',  color: '#22c55e' },
+  { label: 'Jogão',      range: '≥ 8',  color: '#ca8a04' },
+  { label: 'Honesto',    range: '≥ 7',  color: '#78716c' },
+  { label: 'Fraquinho',  range: '≥ 6',  color: '#9ca3af' },
+  { label: 'Passo',      range: '< 6',  color: '#c0392b' },
 ]
 
 export default async function ReviewsPage() {
@@ -36,7 +36,7 @@ export default async function ReviewsPage() {
             <span key={r.label} style={{ fontSize: 12, display: 'flex', alignItems: 'center', gap: 5 }}>
               <span style={{ display: 'inline-block', width: 8, height: 8, borderRadius: '50%', background: r.color }} />
               <span style={{ color: 'var(--muted)' }}>{r.label}</span>
-              <span style={{ color: 'var(--muted-foreground)', fontSize: 11 }}>≥{r.min}</span>
+              <span style={{ color: 'var(--muted-foreground)', fontSize: 11 }}>{r.range}</span>
             </span>
           ))}
         </div>

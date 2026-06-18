@@ -86,7 +86,7 @@ export default async function SobrePage() {
             </p>
 
             {BIO.map((p, i) => (
-              <p key={i} style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--foreground)', marginBottom: 18 }}>
+              <p key={i} style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--foreground)', marginBottom: 18, textAlign: 'justify' }}>
                 {p}
               </p>
             ))}
