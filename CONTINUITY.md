@@ -13,15 +13,16 @@ Leia os arquivos de documentação nesta ordem antes de qualquer coisa:
 4. `SCHEMA.md` — banco de dados Supabase
 5. `TASKS.md` — o que está pendente e o que foi feito
 
-## Estado atual (2026-06-16, sessão 6)
+## Estado atual (2026-06-17, sessão 7)
 
 ### ✅ Páginas concluídas
 - **Homepage** — featured post + sidebar + reviews + como-jogar
-- **Reviews** — listagem + detalhe com sub-scores e ficha técnica
+- **Reviews** — listagem + detalhe com sub-scores em estrelas e ficha técnica; markdown renderizado com `react-markdown`
 - **Artigos** — listagem + detalhe
 - **Como Jogar** — listagem + detalhe
 - **Sobre** — bio completa (7 parágrafos), avatar via Supabase Storage, stats dinâmicos (reviews/guias do DB, 11 anos no hobby, 75 jogos na coleção), botão WhatsApp verde
 - **Top 10 de Todos os Tempos** — totalmente funcional com 10 jogos reais, badges BGG e Ludopedia com links, notas reais buscadas diretamente nos sites
+- **Primeira review publicada** — Shackleton Base, nota 10.0, sub-scores em estrelas, markdown
 
 ### ✅ Banco de dados (Supabase)
 - Projeto ID: `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`
@@ -55,7 +56,7 @@ Retorna 401 (exige Bearer auth) — não usar. Ratings e imagens são salvas no 
 
 ## 🔜 Próximas tarefas (por prioridade)
 
-### [AMANHÃ — sessão 7]
+### [Sessão 8]
 1. **Top 10 Party Games** — Julio vai definir os jogos. Fluxo: buscar no BGG/Ludopedia via Chrome MCP → inserir no banco via `top10_seed.sql`
 2. **Favicon** — `favicon.png` já existe na raiz do projeto. Converter para `.ico` e colocar em `app/favicon.ico` (substituir o atual genérico)
 
@@ -64,7 +65,8 @@ Retorna 401 (exige Bearer auth) — não usar. Ratings e imagens são salvas no 
 4. Analytics — pesquisar opções (Plausible, Umami, Vercel Analytics, Google Analytics) considerando privacidade e custo
 5. Markdown renderizado nas páginas de detalhe (`/como-jogar/[slug]` e `/artigos/[slug]`)
 6. Admin/CMS básico para publicar posts sem precisar do Supabase Studio
-7. PT/EN switcher funcional no Header
+7. **Reviews** — iniciar a escrita e publicação das reviews reais dos jogos do Top 10 (estrutura já existe no banco: tabela `posts` + `reviews` com sub-scores por critério em JSONB)
+8. PT/EN switcher funcional no Header
 
 ## Comandos
 ```bash

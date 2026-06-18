@@ -2,28 +2,26 @@ export const revalidate = 300 // ISR: revalida a cada 5 min em produção
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import ReactMarkdown from 'react-markdown'
 import { getReviewBySlug, getReviews } from '@/lib/content'
 import {
   TypeBadge, GameCover, ReviewCard, formatDate, scoreColor, sectionLabel,
 } from '@/components/content/shared'
 
 const SCORE_COMPONENT_LABELS: Record<string, string> = {
-  componentes: 'Componentes',
-  mecanica:    'Mecânica',
-  interacao:   'Interação',
-  replay:      'Replay',
-  curva:       'Curva de aprendizado',
+  interacao:     'Interação',
+  variabilidade: 'Variabilidade',
+  profundidade:  'Profundidade Estratégica',
+  iconografia:   'Iconografia e Clareza',
+  vontade:       'Vontade de Jogar Novamente',
 }
 
-function ScoreBar({ score }: { score: number }) {
+function StarRating({ score, max = 5 }: { score: number; max?: number }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{ flex: 1, height: 6, background: 'var(--border)', borderRadius: 3, overflow: 'hidden' }}>
-        <div style={{ width: `${(score / 10) * 100}%`, height: '100%', background: scoreColor(score), borderRadius: 3 }} />
-      </div>
-      <span style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: 13, fontWeight: 700, color: scoreColor(score), minWidth: 28 }}>
-        {score.toFixed(1)}
-      </span>
+    <div style={{ display: 'flex', gap: 1, fontSize: 13 }}>
+      {Array.from({ length: max }, (_, i) => (
+        <span key={i}>{i < score ? '⭐' : '☆'}</span>
+      ))}
     </div>
   )
 }
@@ -76,11 +74,22 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
 
           {/* Conteúdo principal */}
           <article>
-            <GameCover
-              coverUrl={review.cover_url ?? game?.image_url}
-              label={game?.name ?? review.title_pt}
-              height={320}
-            />
+            {(review.cover_url ?? game?.image_url) ? (
+              <div style={{ borderRadius: 8, overflow: 'hidden', background: 'var(--surface)' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={review.cover_url ?? game?.image_url ?? ''}
+                  alt={game?.name ?? review.title_pt}
+                  style={{ width: '100%', height: 'auto', display: 'block' }}
+                />
+              </div>
+            ) : (
+              <GameCover
+                coverUrl={null}
+                label={game?.name ?? review.title_pt}
+                height={220}
+              />
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', margin: '24px 0 16px' }}>
               <div>
@@ -111,17 +120,39 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
               {review.published_at ? formatDate(review.published_at) : ''} · {review.reading_time} min de leitura
             </p>
 
-            {review.excerpt_pt && (
-              <p style={{ fontSize: 16, lineHeight: 1.75, color: 'var(--muted)', borderLeft: '3px solid var(--accent)', paddingLeft: 16, marginBottom: 32, fontStyle: 'italic' }}>
-                {review.excerpt_pt}
-              </p>
-            )}
-
             {review.content_pt ? (
               <div style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--foreground)' }}>
-                {review.content_pt.split('\n\n').map((para, i) => (
-                  <p key={i} style={{ marginBottom: 20 }}>{para}</p>
-                ))}
+                <ReactMarkdown
+                  components={{
+                    p: ({ children }) => (
+                      <p style={{ marginBottom: 20, textAlign: 'justify' }}>{children}</p>
+                    ),
+                    h2: ({ children }) => (
+                      <h2 style={{
+                        fontSize: 17, fontWeight: 700, lineHeight: 1.3,
+                        marginBottom: 12, marginTop: 36,
+                        color: 'var(--foreground)',
+                        borderBottom: '1px solid var(--border)',
+                        paddingBottom: 8,
+                      }}>{children}</h2>
+                    ),
+                    h3: ({ children }) => (
+                      <h3 style={{
+                        fontSize: 15, fontWeight: 700, lineHeight: 1.3,
+                        marginBottom: 10, marginTop: 28,
+                        color: 'var(--foreground)',
+                      }}>{children}</h3>
+                    ),
+                    strong: ({ children }) => (
+                      <strong style={{ fontWeight: 700, color: 'var(--foreground)' }}>{children}</strong>
+                    ),
+                    em: ({ children }) => (
+                      <em style={{ fontStyle: 'italic', color: 'var(--muted)' }}>{children}</em>
+                    ),
+                  }}
+                >
+                  {review.content_pt}
+                </ReactMarkdown>
               </div>
             ) : (
               <p style={{ fontSize: 15, lineHeight: 1.8, color: 'var(--muted)', fontStyle: 'italic' }}>
@@ -131,7 +162,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
 
             {reviewData.verdict && (
               <div style={{ marginTop: 32, padding: '16px 20px', background: 'var(--surface)', borderRadius: 8, borderLeft: '4px solid var(--accent)' }}>
-                <p style={{ ...sectionLabel, marginBottom: 8 }}>Veredicto</p>
+                <p style={{ ...sectionLabel, marginBottom: 8 }}>Veredito</p>
                 <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--foreground)', lineHeight: 1.5 }}>
                   {reviewData.verdict}
                 </p>
@@ -145,15 +176,13 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
             {scoreEntries.length > 0 && (
               <div style={{ padding: '16px 18px', background: 'var(--surface)', borderRadius: 10, border: '1px solid var(--border)', marginBottom: 24 }}>
                 <p style={{ ...sectionLabel, marginBottom: 14 }}>Sub-scores</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
                   {scoreEntries.map(([key, val]) => (
                     <div key={key}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 4 }}>
-                        <span style={{ fontSize: 12, color: 'var(--muted)' }}>
-                          {SCORE_COMPONENT_LABELS[key] ?? key}
-                        </span>
-                      </div>
-                      <ScoreBar score={val} />
+                      <span style={{ fontSize: 11, color: 'var(--muted)', display: 'block', marginBottom: 4 }}>
+                        {SCORE_COMPONENT_LABELS[key] ?? key}
+                      </span>
+                      <StarRating score={val} />
                     </div>
                   ))}
                 </div>
@@ -180,7 +209,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
                   game.publisher ? ['Editora', game.publisher] : null,
                   reviewData.recommended_players ? ['Melhor com', reviewData.recommended_players] : null,
                 ].filter((item): item is [string, string] => item !== null).map(([key, val]) => (
-                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', fontSize: 13, padding: '6px 0', borderBottom: '1px solid var(--border)' }}>
+                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 13, padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
                     <span style={{ color: 'var(--muted)' }}>{key}</span>
                     <span style={{ color: 'var(--foreground)', fontWeight: 500 }}>{val}</span>
                   </div>

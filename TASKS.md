@@ -1,6 +1,6 @@
 # O Regrista — TASKS
 
-## [AMANHÃ] Sessão 7
+## Sessão 8
 
 - [ ] **Top 10 Party Games** — Julio define os jogos → buscar imagens + notas via Chrome MCP no BGG e Ludopedia → inserir no `top10_seed.sql` e executar no Supabase
 - [ ] **Favicon** — converter `favicon.png` (raiz do projeto) para `.ico` e substituir `app/favicon.ico` atual pelo personalizado
@@ -16,6 +16,13 @@
 - [ ] **Como Jogar** — criar guias reais de regras
 
 ## Concluído
+
+### 2026-06-17 (sessão 7)
+- [x] `react-markdown` instalado (v10) — renderização de markdown nas reviews
+- [x] `app/[locale]/reviews/[slug]/page.tsx` — markdown com texto justificado, h2 estilizados, remoção do destaque do excerpt
+- [x] `app/[locale]/reviews/[slug]/page.tsx` — sub-scores substituídos por estrelas (⭐/☆, escala 1–5) com novos critérios
+- [x] `app/[locale]/reviews/[slug]/page.tsx` — imagem com `height: auto` (sem crop), ficha técnica com gap, "Veredito" corrigido
+- [x] `supabase/review_shackleton_base.sql` — primeira review publicada: Shackleton Base, nota 10.0
 
 ### 2026-06-16 (sessão 6)
 - [x] `app/[locale]/sobre/page.tsx` — bio completa (7 parágrafos do Julio), avatar Supabase Storage, stats dinâmicos (reviews/guias do DB), ANOS_NO_HOBBY=11, JOGOS_NA_COLECAO=75, WhatsApp verde
