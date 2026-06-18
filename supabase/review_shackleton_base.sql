@@ -11,8 +11,8 @@ INSERT INTO posts (
   id, slug, type, status,
   title_pt,
   excerpt_pt,
-  content_pt,
   cover_url,
+  content_pt,
   reading_time,
   featured,
   published_at
