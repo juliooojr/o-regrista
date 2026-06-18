@@ -39,21 +39,12 @@ export default function Header() {
       top: 0,
       zIndex: 50,
     }}>
-      <div style={{
-        maxWidth: 1200,
-        margin: '0 auto',
-        padding: '0 24px',
-        height: 56,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: 24,
-      }}>
+      <div className="header-inner">
         <Link href="/" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 22, letterSpacing: '0.04em', color: 'var(--foreground)', textDecoration: 'none', flexShrink: 0 }}>
           O Regrista
         </Link>
 
-        <nav style={{ display: 'flex', gap: 24, fontSize: 13, fontWeight: 500 }}>
+        <nav className="header-nav">
           {navLinks.map(({ href, label }) => (
             <Link key={href} href={href} style={{ color: 'var(--muted)', textDecoration: 'none' }}>
               {label}

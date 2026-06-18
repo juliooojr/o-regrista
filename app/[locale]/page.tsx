@@ -85,9 +85,9 @@ function postHref(post: Post): string {
 function FeaturedPost({ post, score }: { post: Post; score?: number }) {
   const label = post.title_pt
   return (
-    <Link href={postHref(post)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 28, height: '100%' }}>
+    <Link href={postHref(post)} className="featured-row">
       {/* Imagem quadrada */}
-      <div style={{ flexShrink: 0, width: 260, height: 260, borderRadius: 8, overflow: 'hidden' }}>
+      <div className="featured-cover">
         {post.cover_url
           // eslint-disable-next-line @next/next/no-img-element
           ? <img src={post.cover_url} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center' }} />
@@ -225,7 +225,7 @@ export default async function HomePage() {
 
       <div style={container}>
         {/* ── Grid principal ────────────────────────────────── */}
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 40, padding: '28px 0 32px', borderBottom: '1px solid var(--border)' }}>
+        <div className="home-main-grid" style={{ padding: '28px 0 32px', borderBottom: '1px solid var(--border)' }}>
           {/* Featured */}
           {featured ? (
             <FeaturedPost post={featured} score={featuredScore} />
@@ -247,7 +247,7 @@ export default async function HomePage() {
               <p style={labelStyle}>Como Jogar — guias de regras</p>
               <Link href="/como-jogar" style={{ fontSize: 12, color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}>Ver todos →</Link>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20 }}>
+            <div className="card-grid-3">
               {howToPlayGuides.map(p => <HowToPlayCard key={p.id} post={p} />)}
             </div>
           </div>
@@ -260,7 +260,7 @@ export default async function HomePage() {
               <p style={labelStyle}>Últimos reviews</p>
               <Link href="/reviews" style={{ fontSize: 12, color: 'var(--accent)', textDecoration: 'none', fontWeight: 500 }}>Ver todos →</Link>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+            <div className="card-grid-3">
               {latestReviews.map(r => <ReviewCard key={r.id} post={r} />)}
             </div>
           </div>

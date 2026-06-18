@@ -69,7 +69,7 @@ export default async function Top10Page() {
       </div>
 
       <div style={container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 280px', gap: 48, paddingBottom: 64, alignItems: 'start' }}>
+        <div className="page-sidebar-grid">
 
           {/* ─── Lista principal ────────────────────────────────────────── */}
           <div>
@@ -212,7 +212,7 @@ export default async function Top10Page() {
           </div>
 
           {/* ─── Sidebar ────────────────────────────────────────────────── */}
-          <aside style={{ position: 'sticky', top: 24 }}>
+          <aside className="sidebar-sticky">
             <p style={{ ...sectionLabel, marginBottom: 16 }}>Outras listas</p>
 
             {otherLists.length === 0 ? (
