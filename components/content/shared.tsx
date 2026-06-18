@@ -103,7 +103,7 @@ export function ReviewCard({ post }: { post: ReviewFull }) {
       borderRadius: 10, overflow: 'hidden', display: 'block',
       background: 'var(--surface-elevated)', transition: 'border-color 0.15s',
     }}>
-      <GameCover coverUrl={post.cover_url} label={post.game?.name ?? post.title_pt} height={120} />
+      <GameCover coverUrl={post.cover_url ?? post.game?.image_url} label={post.game?.name ?? post.title_pt} height={180} />
       <div style={{ padding: '12px 14px 14px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <TypeBadge type={post.type} />

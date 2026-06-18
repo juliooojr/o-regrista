@@ -133,7 +133,7 @@ function SidebarItem({ post }: { post: Post }) {
 function ReviewCard({ post }: { post: ReviewFull }) {
   return (
     <Link href={`/reviews/${post.slug}`} style={{ textDecoration: 'none', color: 'inherit', border: '1px solid var(--border)', borderRadius: 10, overflow: 'hidden', display: 'block', background: 'var(--surface-elevated)' }}>
-      <Cover coverUrl={post.cover_url} label={post.game?.name ?? post.title_pt} height={120} />
+      <Cover coverUrl={post.cover_url ?? post.game?.image_url} label={post.game?.name ?? post.title_pt} height={180} />
       <div style={{ padding: '12px 14px 14px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <TypeBadge type={post.type} />
