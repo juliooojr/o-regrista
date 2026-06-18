@@ -58,13 +58,17 @@ function TypeBadge({ type }: { type: PostType }) {
 }
 
 function Cover({ coverUrl, label, width, height }: { coverUrl?: string | null; label: string; width?: number | string; height: number | string }) {
+  if (coverUrl) {
+    return (
+      <div style={{ width: width ?? '100%', height, flexShrink: 0, borderRadius: 6, overflow: 'hidden' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={coverUrl} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      </div>
+    )
+  }
   return (
-    <div style={{ width: width ?? '100%', height, flexShrink: 0, borderRadius: 6, background: coverUrl ? undefined : placeholderColor(label), overflow: 'hidden', display: 'flex', alignItems: 'flex-end' }}>
-      {coverUrl
-        // eslint-disable-next-line @next/next/no-img-element
-        ? <img src={coverUrl} alt={label} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        : <span style={{ width: '100%', padding: '6px 8px', background: 'rgba(0,0,0,0.45)', color: '#fff', fontSize: 10, fontWeight: 600, lineHeight: 1.2, letterSpacing: '0.03em' }}>{label}</span>
-      }
+    <div style={{ width: width ?? '100%', height, flexShrink: 0, borderRadius: 6, background: placeholderColor(label), overflow: 'hidden', display: 'flex', alignItems: 'flex-end' }}>
+      <span style={{ width: '100%', padding: '6px 8px', background: 'rgba(0,0,0,0.45)', color: '#fff', fontSize: 10, fontWeight: 600, lineHeight: 1.2, letterSpacing: '0.03em' }}>{label}</span>
     </div>
   )
 }

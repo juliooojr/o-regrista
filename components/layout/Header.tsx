@@ -12,18 +12,9 @@ export default function Header() {
   const router = useRouter()
   const pathname = usePathname()
 
-  useEffect(() => {
-    const saved = localStorage.getItem('theme') as Theme | null
-    if (saved) {
-      setTheme(saved)
-      document.documentElement.setAttribute('data-theme', saved)
-    }
-  }, [])
-
   const toggleTheme = () => {
     const next: Theme = theme === 'light' ? 'dark' : 'light'
     setTheme(next)
-    localStorage.setItem('theme', next)
     document.documentElement.setAttribute('data-theme', next)
   }
 

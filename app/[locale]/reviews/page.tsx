@@ -9,12 +9,10 @@ export const metadata: Metadata = {
 }
 
 const SCORE_RANGES = [
-  { label: 'Obra-prima', min: 9.5, color: '#16a34a' },
-  { label: 'Excelente',  min: 9.0, color: '#22c55e' },
-  { label: 'Muito bom',  min: 7.5, color: '#ca8a04' },
-  { label: 'Bom',        min: 6.0, color: '#78716c' },
-  { label: 'Mediano',    min: 4.0, color: '#9ca3af' },
-  { label: 'Fraco',      min: 0,   color: '#dc2626' },
+  { label: 'Honesto',    min: 8.0, color: '#2d8a55' },
+  { label: 'Legalzinho', min: 7.0, color: '#ca8a04' },
+  { label: 'Mediano',    min: 6.0, color: '#78716c' },
+  { label: 'Ruim',       min: 0,   color: '#c0392b' },
 ]
 
 export default async function ReviewsPage() {
