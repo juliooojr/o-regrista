@@ -86,9 +86,13 @@ function FeaturedPost({ post, score }: { post: Post; score?: number }) {
   const label = post.title_pt
   return (
     <Link href={postHref(post)} style={{ textDecoration: 'none', color: 'inherit', display: 'flex', gap: 28, height: '100%' }}>
-      {/* Imagem quadrada */}
-      <div style={{ flexShrink: 0 }}>
-        <Cover coverUrl={post.cover_url} label={label} width={280} height={280} />
+      {/* Imagem quadrada — contain para não cortar */}
+      <div style={{ flexShrink: 0, width: 260, height: 260, borderRadius: 8, overflow: 'hidden', background: 'var(--surface)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {post.cover_url
+          // eslint-disable-next-line @next/next/no-img-element
+          ? <img src={post.cover_url} alt={label} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+          : <span style={{ fontSize: 12, color: 'var(--muted)', padding: 16, textAlign: 'center' as const }}>{label}</span>
+        }
       </div>
 
       {/* Texto */}
@@ -198,7 +202,7 @@ export default async function HomePage() {
 
   const featured = featuredPost
   const featuredScore = featuredReview?.review.score
-  const sidebarItems = latestPosts.filter(p => p.id !== featuredPost?.id).slice(0, 5)
+  const sidebarItems = latestPosts.filter(p => p.id !== featuredPost?.id).slice(0, 3)
 
   return (
     <div>
@@ -226,12 +230,6 @@ export default async function HomePage() {
 
           {/* Sidebar */}
           <div>
-            <div style={{ marginBottom: 20, padding: '14px 16px', background: 'var(--surface)', borderRadius: 8, border: '1px solid var(--border)' }}>
-              <p style={{ fontSize: 13, fontWeight: 600, marginBottom: 6, color: 'var(--foreground)' }}>Sobre o Regrista</p>
-              <p style={{ fontSize: 12, color: 'var(--muted)', lineHeight: 1.6 }}>
-                Julio — regrista convicto. Reviews honestas, regras sem mistério e opinião sem papas na língua.
-              </p>
-            </div>
             <p style={{ ...labelStyle, marginBottom: 4 }}>Recentes</p>
             {sidebarItems.map(p => <SidebarItem key={p.id} post={p} />)}
           </div>
