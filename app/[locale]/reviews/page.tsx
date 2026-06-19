@@ -44,4 +44,8 @@ export default async function ReviewsPage() {
         {/* Grid de reviews */}
         <div className="card-grid-3" style={{ paddingBottom: 48 }}>
           {reviews.map(r => <ReviewCard key={r.id} post={r} />)}
-       
+        </div>
+      </div>
+    </div>
+  )
+}
