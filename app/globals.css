@@ -225,3 +225,26 @@ a {
     grid-template-columns: repeat(2, 1fr);
   }
 }
+
+/* Top 10 item row */
+.top10-item {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+.top10-info {
+  flex: 1;
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .top10-item {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .top10-info {
+    flex-basis: 100%;
+  }
+}

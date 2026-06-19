@@ -108,8 +108,8 @@ export default async function Top10Page() {
                       return (
                         <div
                           key={item.id}
+                          className="top10-item"
                           style={{
-                            display: 'flex', gap: 20, alignItems: 'flex-start',
                             padding: '24px 0',
                             borderBottom: idx < featured.items.length - 1
                               ? '1px solid var(--border)'
@@ -146,7 +146,7 @@ export default async function Top10Page() {
                           </div>
 
                           {/* Infos */}
-                          <div style={{ flex: 1, minWidth: 0 }}>
+                          <div className="top10-info">
                             {/* Nome + link BGG */}
                             <div style={{ display: 'flex', alignItems: 'baseline', gap: 8, flexWrap: 'wrap', marginBottom: 6 }}>
                               <p style={{ fontSize: 17, fontWeight: 700, color: 'var(--foreground)', lineHeight: 1.3, margin: 0 }}>
