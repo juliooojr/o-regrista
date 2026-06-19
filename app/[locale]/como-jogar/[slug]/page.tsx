@@ -52,7 +52,7 @@ export default async function ComoJogarPostPage({ params }: Props) {
       </div>
 
       <div style={container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 48, padding: '32px 0 48px' }}>
+        <div className="page-sidebar-grid" style={{ padding: '32px 0 48px' }}>
 
           {/* Conteúdo principal */}
           <article>

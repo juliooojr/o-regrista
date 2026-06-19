@@ -12,12 +12,13 @@ export const metadata: Metadata = {
 
 function FeaturedGuide({ post }: { post: Post }) {
   return (
-    <Link href={`/como-jogar/${post.slug}`} style={{
-      textDecoration: 'none', color: 'inherit', display: 'flex', gap: 28,
+    <Link href={`/como-jogar/${post.slug}`} className="featured-guide-row" style={{
       padding: '24px', background: 'var(--surface)', border: '1px solid var(--border)',
       borderRadius: 12, marginBottom: 32,
     }}>
-      <GameCover coverUrl={post.cover_url} label={post.title_pt} width={160} height={160} />
+      <div className="featured-cover-sm">
+        <GameCover coverUrl={post.cover_url} label={post.title_pt} width="100%" height={160} />
+      </div>
       <div style={{ flex: 1 }}>
         <div style={{ marginBottom: 10 }}>
           <TypeBadge type="how-to-play" />
@@ -59,7 +60,7 @@ export default async function ComoJogarPage() {
             {rest.length > 0 && (
               <>
                 <p style={{ ...sectionLabel, marginBottom: 16 }}>Todos os guias</p>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16, paddingBottom: 48 }}>
+                <div className="card-grid-4" style={{ paddingBottom: 48 }}>
                   {rest.map(p => <HowToPlayCard key={p.id} post={p} />)}
                 </div>
               </>

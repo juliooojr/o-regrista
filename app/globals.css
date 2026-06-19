@@ -188,3 +188,40 @@ a {
     height: 180px;
   }
 }
+
+/* Featured guide row (como-jogar listing) */
+.featured-guide-row {
+  display: flex;
+  gap: 28px;
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Featured guide cover — constrains GameCover width on desktop */
+.featured-cover-sm {
+  flex-shrink: 0;
+  width: 160px;
+}
+
+@media (max-width: 768px) {
+  .featured-guide-row {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .featured-cover-sm {
+    width: 100%;
+  }
+}
+
+/* Stats grid — 4 células com borda via gap */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

@@ -60,7 +60,7 @@ export default async function SobrePage() {
       </div>
 
       <div style={container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 300px', gap: 48, paddingBottom: 48 }}>
+        <div className="page-sidebar-grid">
 
           {/* Bio */}
           <div>
@@ -92,8 +92,8 @@ export default async function SobrePage() {
             ))}
 
             {/* Stats dinâmicos do banco */}
-            <div style={{
-              display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 1,
+            <div className="stats-grid" style={{
+              gap: 1,
               background: 'var(--border)', borderRadius: 10, overflow: 'hidden', marginTop: 32,
             }}>
               {STATS.map(s => (

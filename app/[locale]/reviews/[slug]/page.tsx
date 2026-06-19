@@ -70,7 +70,7 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
       </div>
 
       <div style={container}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: 48, padding: '32px 0 48px' }}>
+        <div className="page-sidebar-grid" style={{ padding: '32px 0 48px' }}>
 
           {/* Conteúdo principal */}
           <article>
@@ -206,29 +206,4 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
                   (game.min_duration && game.max_duration) ? ['Duração', `${game.min_duration}–${game.max_duration} min`] : null,
                   game.weight ? ['Complexidade', `${game.weight.toFixed(1)} / 5.0`] : null,
                   game.designer ? ['Designer', game.designer] : null,
-                  game.publisher ? ['Editora', game.publisher] : null,
-                  reviewData.recommended_players ? ['Melhor com', reviewData.recommended_players] : null,
-                ].filter((item): item is [string, string] => item !== null).map(([key, val]) => (
-                  <div key={key} style={{ display: 'flex', justifyContent: 'space-between', gap: 12, fontSize: 13, padding: '8px 0', borderBottom: '1px solid var(--border)' }}>
-                    <span style={{ color: 'var(--muted)' }}>{key}</span>
-                    <span style={{ color: 'var(--foreground)', fontWeight: 500 }}>{val}</span>
-                  </div>
-                ))}
-              </div>
-            )}
-          </aside>
-        </div>
-
-        {/* Reviews relacionadas */}
-        {related.length > 0 && (
-          <div style={{ paddingBottom: 48, borderTop: '1px solid var(--border)', paddingTop: 32 }}>
-            <p style={{ ...sectionLabel, marginBottom: 20 }}>Outras reviews</p>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
-              {related.map(r => <ReviewCard key={r.id} post={r} />)}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  )
-}
+ 

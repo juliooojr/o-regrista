@@ -42,10 +42,6 @@ export default async function ReviewsPage() {
         </div>
 
         {/* Grid de reviews */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 20, paddingBottom: 48 }}>
+        <div className="card-grid-3" style={{ paddingBottom: 48 }}>
           {reviews.map(r => <ReviewCard key={r.id} post={r} />)}
-        </div>
-      </div>
-    </div>
-  )
-}
+       
