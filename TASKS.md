@@ -1,9 +1,8 @@
 # O Regrista — TASKS
 
-## Sessão 8
+## Sessão 9 — Pendente
 
 - [ ] **Top 10 Party Games** — Julio define os jogos → buscar imagens + notas via Chrome MCP no BGG e Ludopedia → inserir no `top10_seed.sql` e executar no Supabase
-- [ ] **Favicon** — converter `favicon.png` (raiz do projeto) para `.ico` e substituir `app/favicon.ico` atual pelo personalizado
 
 ## Backlog (por prioridade)
 
@@ -17,7 +16,24 @@
 
 ## Concluído
 
-### 2026-06-17 (sessão 7)
+### 2026-06-19 (sessão 9)
+- [x] **Responsividade completa** — todas as páginas adaptadas para mobile/tablet
+  - `app/globals.css` — classes responsivas: `.home-main-grid`, `.page-sidebar-grid`, `.sidebar-sticky`, `.card-grid-3`, `.card-grid-4`, `.featured-row`, `.featured-cover`, `.header-inner`, `.header-nav`, `.featured-guide-row`, `.featured-cover-sm`, `.top10-item`, `.top10-info`, `.stats-grid`
+  - `app/[locale]/page.tsx` — homepage grid, featured post, cards
+  - `app/[locale]/top10/page.tsx` — sidebar grid + itens do ranking (infos abaixo da capa no mobile)
+  - `app/[locale]/reviews/page.tsx` — card grid 3 colunas
+  - `app/[locale]/reviews/[slug]/page.tsx` — sidebar grid
+  - `app/[locale]/como-jogar/page.tsx` — featured guide row + card grid 4 colunas
+  - `app/[locale]/como-jogar/[slug]/page.tsx` — sidebar grid
+  - `app/[locale]/sobre/page.tsx` — sidebar grid + stats grid
+  - `components/layout/Header.tsx` — nav em segunda linha scrollável no mobile
+  - Breakpoints: ≤768px (tablet) e ≤480px (mobile estreito)
+- [x] **Favicon** — `favicon.png` (meeple lendo livro) convertido e aplicado
+  - `app/favicon.ico` — ICO multi-size (16, 32, 48px) gerado via Pillow
+  - `app/icon.png` — 512×512px PNG para apple-touch-icon e ícones modernos
+  - Next.js App Router serve ambos automaticamente sem configuração adicional
+
+### 2026-06-18 (sessão 8)
 - [x] `react-markdown` instalado (v10) — renderização de markdown nas reviews
 - [x] `app/[locale]/reviews/[slug]/page.tsx` — markdown com texto justificado, h2 estilizados, remoção do destaque do excerpt
 - [x] `app/[locale]/reviews/[slug]/page.tsx` — sub-scores substituídos por estrelas (⭐/☆, escala 1–5) com novos critérios
@@ -25,26 +41,18 @@
 - [x] `supabase/review_shackleton_base.sql` — primeira review publicada: Shackleton Base, nota 10.0
 
 ### 2026-06-16 (sessão 6)
-- [x] `app/[locale]/sobre/page.tsx` — bio completa (7 parágrafos do Julio), avatar Supabase Storage, stats dinâmicos (reviews/guias do DB), ANOS_NO_HOBBY=11, JOGOS_NA_COLECAO=75, WhatsApp verde
-- [x] `app/[locale]/top10/page.tsx` — lista "Meu Top 10 de todos os tempos" aberta + sidebar com outras listas
+- [x] `app/[locale]/sobre/page.tsx` — bio completa, avatar Supabase Storage, stats dinâmicos, WhatsApp
+- [x] `app/[locale]/top10/page.tsx` — lista principal + sidebar com outras listas
 - [x] `app/[locale]/top10/[slug]/page.tsx` — página dinâmica para qualquer lista
-- [x] `supabase/migrations/002_game_ratings.sql` — colunas `bgg_rating`, `ludopedia_rating`, `ludopedia_url` na tabela `games`
-- [x] `supabase/top10_seed.sql` — 10 jogos com imagens BGG, notas reais (buscadas no BGG e Ludopedia em 16/06), descritivos do Julio
-- [x] `components/content/shared.tsx` — `GameCover` com `objectFit: cover` (preenche quadrado sem tarjas)
+- [x] `supabase/migrations/002_game_ratings.sql` — colunas bgg_rating, ludopedia_rating, ludopedia_url
+- [x] `supabase/top10_seed.sql` — 10 jogos com imagens BGG, notas reais, descritivos do Julio
+- [x] `components/content/shared.tsx` — GameCover com objectFit: cover
 - [x] `components/layout/Footer.tsx` — "por Julio Jr."
-- [x] `lib/content.ts` — `getSiteStats()`, `getTop10BySlug()`, campos `ludopedia_rating`/`ludopedia_url` no tipo `Game`
+- [x] `lib/content.ts` — getSiteStats(), getTop10BySlug(), campos ludopedia
 
-### 2026-06-14 (sessão 4)
-- [x] `lib/i18n/navigation.ts` — `createNavigation` do next-intl
-- [x] `components/layout/Header.tsx` — PT/EN switcher (visual, não funcional ainda)
-- [x] `app/[locale]/artigos/[slug]/page.tsx` — detalhe com sidebar
-- [x] `app/[locale]/como-jogar/[slug]/page.tsx` — detalhe com sidebar
-- [x] `app/[locale]/top10/[slug]/page.tsx` — ranking interativo (ChangeBadge, WeightBar)
-- [x] `generateMetadata` em todas as rotas públicas
-- [x] `app/sitemap.ts` — dinâmico a partir de `getAllPublishedPosts()`
-
-### 2026-06-14 (sessões 1–3)
+### 2026-06-14 (sessões 1–4)
 - [x] Scaffold completo: Next.js 15, TypeScript, App Router, next-intl, Tailwind v4
 - [x] Supabase conectado — migration + seed executados
-- [x] Homepage + Reviews + Artigos + Como Jogar + Sobre — todos conectados ao banco
+- [x] Homepage + Reviews + Artigos + Como Jogar + Sobre — conectados ao banco
 - [x] Arquivos de documentação: BRAIN.md, DESIGN.md, AGENTS.md, SCHEMA.md
+- [x] Header PT/EN switcher (visual), sitemap dinâmico, generateMetadata em todas as rotas

@@ -13,92 +13,76 @@ Leia os arquivos de documentação nesta ordem antes de qualquer coisa:
 4. `SCHEMA.md` — banco de dados Supabase
 5. `TASKS.md` — o que está pendente e o que foi feito
 
-## Estado atual (2026-06-18, sessão 8)
+## Estado atual (2026-06-19, sessão 9)
 
 ### ✅ Páginas concluídas
-- **Homepage** — featured post (imagem `objectFit: cover`, sem tarjas) + sidebar 3 recentes + grid reviews + como-jogar (3 colunas, mesmo formato de reviews)
-- **Reviews** — listagem com escala renomeada + detalhe com sub-scores em estrelas e ficha técnica; markdown via `react-markdown`
+- **Homepage** — featured post + sidebar recentes + grid reviews + como-jogar
+- **Reviews** — listagem com escala de scores + detalhe com sub-scores em estrelas, markdown, ficha técnica
 - **Artigos** — bloqueada com página "Em breve 🚧"
-- **Como Jogar** — listagem + detalhe
-- **Sobre** — bio com `textAlign: justify`, avatar via Supabase Storage, stats dinâmicos, botão WhatsApp
-- **Top 10 de Todos os Tempos** — funcional com 10 jogos reais, badges BGG e Ludopedia
-- **Primeira review publicada** — Shackleton Base, nota 10.0, sub-scores em estrelas, markdown completo
+- **Como Jogar** — listagem com featured guide + detalhe
+- **Sobre** — bio completa, avatar Supabase Storage, stats dinâmicos, botão WhatsApp
+- **Top 10** — lista principal (10 jogos reais) + sidebar + páginas dinâmicas por slug
+- **Primeira review publicada** — Shackleton Base, nota 10.0, markdown completo
+
+### ✅ Responsividade — CONCLUÍDA (sessão 9)
+Todas as páginas adaptadas para mobile/tablet via classes CSS em `app/globals.css`.
+Estratégia: inline styles mantidos para cores/visual, layout extraído para classes com media queries.
+
+**Breakpoints:** ≤768px (tablet) e ≤480px (mobile estreito)
+
+**Classes criadas:**
+| Classe | Uso |
+|--------|-----|
+| `.home-main-grid` | Grid 1fr+300px da homepage → 1 coluna no mobile |
+| `.page-sidebar-grid` | Grid 1fr+280-320px com sidebar → 1 coluna no mobile |
+| `.sidebar-sticky` | `position: sticky` → `static` no mobile |
+| `.card-grid-3` | Grid 3 colunas → 2 colunas tablet, 1 mobile |
+| `.card-grid-4` | Grid 4 colunas → 2 colunas tablet, 1 mobile |
+| `.featured-row` | Flex row do destaque → coluna no mobile |
+| `.featured-cover` | Capa 260×260 → 100% largura no mobile |
+| `.featured-guide-row` | Flex row do featured guide → coluna no mobile |
+| `.featured-cover-sm` | Capa 160px → 100% largura no mobile |
+| `.top10-item` | Flex row do item do top10 → wrap no mobile (infos abaixo) |
+| `.top10-info` | Texto do item top10 → flex-basis 100% no mobile |
+| `.stats-grid` | Grid 4 stats → 2 colunas no mobile estreito |
+| `.header-inner` | Header wrapper → wrap no mobile |
+| `.header-nav` | Nav → segunda linha scrollável horizontal no mobile |
+
+**Arquivos alterados:**
+- `app/globals.css` (250 linhas)
+- `app/[locale]/page.tsx`
+- `app/[locale]/top10/page.tsx`
+- `app/[locale]/reviews/page.tsx`
+- `app/[locale]/reviews/[slug]/page.tsx`
+- `app/[locale]/como-jogar/page.tsx`
+- `app/[locale]/como-jogar/[slug]/page.tsx`
+- `app/[locale]/sobre/page.tsx`
+- `components/layout/Header.tsx`
+
+### ✅ Favicon — CONCLUÍDO (sessão 9)
+- Fonte: `favicon.png` na raiz (meeple amarelo lendo livro, 1024×1536px)
+- `app/favicon.ico` — ICO multi-size (16/32/48px), gerado com Pillow
+- `app/icon.png` — 512×512px PNG, servido automaticamente pelo Next.js App Router
+- Nenhuma configuração adicional necessária
 
 ### ✅ Comportamento global
 - Tema sempre claro ao abrir (sem localStorage — apenas toggle por sessão)
-- Locale padrão PT sem redirecionamento (`localeDetection: false` em `lib/i18n/routing.ts`)
+- Locale padrão PT sem redirecionamento (`localeDetection: false`)
 - Botão EN desabilitado no Header (span cinza, cursor `not-allowed`, tooltip "Em breve")
-
-### ✅ Escala de scores em `/reviews`
-| Label | Range |
-|-------|-------|
-| Obra-prima | = 10 |
-| Excelente | ≥ 9 |
-| Jogão | ≥ 8 |
-| Honesto | ≥ 7 |
-| Fraquinho | ≥ 6 |
-| Passo | < 6 |
 
 ### ✅ Banco de dados (Supabase)
 - Projeto ID: `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`
-- Migration `001_initial_schema.sql` — executada
-- Migration `002_game_ratings.sql` — adiciona `bgg_rating`, `ludopedia_rating`, `ludopedia_url` à tabela `games`
-- `top10_seed.sql` — seed completo do Top 10 de Todos os Tempos
-- `review_shackleton_base.sql` — seed da review do Shackleton Base (re-executar para aplicar atualizações de conteúdo)
+- Migrations executadas: `001_initial_schema.sql`, `002_game_ratings.sql`
+- Seeds executados: `top10_seed.sql`, `review_shackleton_base.sql`
 
-### ✅ Dados reais do Top 10 (notas buscadas em 2026-06-16)
-| Jogo | ID BGG | BGG | Ludopedia |
-|------|--------|-----|-----------|
-| Terraforming Mars | 167791 | 8.3 | 9.0 |
-| Gloomhaven | 174430 | 8.5 | 9.0 |
-| Brass: Birmingham | 224517 | 8.6 | 9.0 |
-| Dune: Imperium – Uprising | 397598 | 8.7 | 8.8 |
-| Ark Nova | 342942 | 8.5 | 9.0 |
-| SETI | 418059 | 8.4 | 8.9 |
-| Age of Innovation | 383179 | 8.4 | 8.8 |
-| La Granja: Deluxe Master Set | 341945 | 8.2 | 8.6 |
-| Nucleum | 396790 | 8.1 | 8.5 |
-| Shackleton Base | 408180 | 8.0 | 8.1 |
+### ⚠️ Atenção técnica
+Vários arquivos `.tsx` do projeto têm **null bytes embebidos** em comentários — herança de como foram criados originalmente. Isso não afeta o build do Next.js/Vercel mas causa erros no `tsc --noEmit`. Ao editar esses arquivos via script Python, **sempre usar `git show HEAD:arquivo | tr -d '\000'`** como fonte para evitar truncamento — nunca ler o arquivo do disco e fazer replace direto em Python, pois null bytes podem corromper o resultado.
 
-### ✅ Arquitetura relevante
-- `lib/content.ts` — funções com `cache()` + `createPublicClient()`
-- `components/content/shared.tsx` — `GameCover` com `objectFit: cover`
-- `app/[locale]/page.tsx` — FeaturedPost com imagem `objectFit: cover` 260×260, sidebar `.slice(0, 3)`
-- `app/[locale]/artigos/page.tsx` — página "Em breve", sem imports desnecessários
-- `components/layout/Header.tsx` — EN desabilitado, sem localStorage
-- `app/layout.tsx` — tema sempre light, sem localStorage
+Arquivos com null bytes conhecidos (pré-existentes, não causam problema no build):
+- `app/[locale]/artigos/page.tsx`
+- `app/[locale]/como-jogar/page.tsx` (limpo na sessão 9)
+- `app/[locale]/sobre/page.tsx` (limpo na sessão 9)
+- `app/layout.tsx`
 
-### ⚠️ BGG API
-Retorna 401 — não usar. Ratings e imagens são salvas no banco. Para buscar dados usar Chrome MCP nas páginas do BGG e Ludopedia.
-
-## 🔜 Backlog (por prioridade)
-
-1. **Ajustar responsividade** — site ainda não está adaptado para mobile
-2. **Top 10 Party Games** — Julio vai definir os jogos. Fluxo: buscar no BGG/Ludopedia via Chrome MCP → inserir no banco via SQL seed
-3. **Favicon** — `favicon.png` já existe na raiz. Converter para `.ico` e colocar em `app/favicon.ico`
-4. **Analytics** — pesquisar opções (Plausible, Umami, Vercel Analytics) considerando privacidade e custo
-5. **Markdown nas páginas de detalhe** — `/como-jogar/[slug]` e `/artigos/[slug]`
-6. **Admin/CMS básico** — publicar posts sem precisar do Supabase Studio
-7. **Mais reviews** — escrever e publicar reviews dos jogos do Top 10
-8. **PT/EN funcional** — traduzir conteúdo e reabilitar o switcher
-
-## Comandos
-```bash
-# Dev local
-cd "C:\Users\Julio Jr\Desktop\o-regrista"
-npm run dev
-# → http://localhost:3000
-
-# Git (rodar no terminal Windows — o sandbox Linux não consegue escrever no .git)
-cd "C:\Users\Julio Jr\Desktop\o-regrista"
-git add -A
-git commit -m "mensagem"
-git push
-```
-
-## SQL — ordem de execução se o banco precisar ser refeito
-1. `supabase/migrations/001_initial_schema.sql`
-2. `supabase/migrations/002_game_ratings.sql`
-3. `supabase/seed.sql`
-4. `supabase/top10_seed.sql`
-5. `supabase/review_shackleton_base.sql`
+## Próximo passo sugerido
+Retomar o **Top 10 Party Games** (definir jogos com Julio) ou atacar o **backlog de analytics**.
