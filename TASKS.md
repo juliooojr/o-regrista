@@ -1,8 +1,10 @@
 # O Regrista — TASKS
 
-## Sessão 9 — Pendente
+## Sessão 10 — Pendente
 
-- [ ] **Top 10 Party Games** — Julio define os jogos → buscar imagens + notas via Chrome MCP no BGG e Ludopedia → inserir no `top10_seed.sql` e executar no Supabase
+*(nenhum item pendente desta sessão)*
+
+## Backlog (por prioridade)
 
 ## Backlog (por prioridade)
 
@@ -15,6 +17,14 @@
 - [ ] **Como Jogar** — criar guias reais de regras
 
 ## Concluído
+
+### 2026-06-19 (sessão 10)
+- [x] **Top 10 Party Games** — 10 jogos definidos pelo Julio, dados oficiais coletados via BGG, SQL gerado
+  - `supabase/top10_party_games_seed.sql` — UPDATE Codenames (image_url) + INSERT 9 jogos novos + repopula `top10_items` da lista `top-10-party-games`
+  - Jogos: Codenames, Passaporte Mundo, Flip 7, Citadels, Telestrations, Cabanga!, BANG!, Dobble, Imagem & Ação, Exploding Kittens
+  - IDs de jogos alocados: `000...0022` a `000...0030`
+  - Imagens: todas via `cf.geekdo-images.com` (já liberado no `next.config.ts`)
+  - **Próximo passo manual:** executar `top10_party_games_seed.sql` no Supabase SQL Editor
 
 ### 2026-06-19 (sessão 9)
 - [x] **Responsividade completa** — todas as páginas adaptadas para mobile/tablet
