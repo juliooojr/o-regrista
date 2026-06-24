@@ -2,8 +2,9 @@
 
 ## Pendente
 
-- [ ] **Executar SQL no Supabase** — rodar `supabase/top10_party_games_seed.sql` no SQL Editor de produção para popular os 10 party games
-- [ ] **Segunda review** — escolher jogo + escrever conteúdo + SQL seed
+- [ ] **Publicar PARKS review** — rodar `supabase/review_parks_second_edition.sql` no Supabase SQL Editor
+- [ ] **Patch imagem Shackleton** — rodar `supabase/patch_shackleton_image.sql` no Supabase (atualiza capa para versão quadrada 445×445)
+- [ ] **Top 10 Party Games** — rodar `supabase/top10_party_games_seed.sql` no Supabase SQL Editor
 
 ## Backlog (por prioridade)
 
@@ -18,6 +19,19 @@
 - [ ] **Como Jogar** — criar guias reais de regras
 
 ## Concluído
+
+### 2026-06-24 (sessão 12)
+- [x] **Review PARKS (Second Edition)** — nota 7.0, slug `parks-review`, data 21/06/2026
+  - `supabase/review_parks_second_edition.sql` — game + post + review gerados
+  - Score components: interacao 2, variabilidade 2, profundidade 2, iconografia 5, vontade 3
+  - Imagem quadrada: `pic8660069` (445×445)
+- [x] **Patch imagem Shackleton Base** — `supabase/patch_shackleton_image.sql` gerado; `review_shackleton_base.sql` e `top10_seed.sql` atualizados nos arquivos fonte (URL 1200×630 → 445×445)
+- [x] **ReviewCard redesenhado** — `components/content/shared.tsx`: `aspect-ratio: 1/1` + `objectPosition: center top`; sem cropping para imagens quadradas ou landscape
+- [x] **Layout da review refatorado** — `app/[locale]/reviews/[slug]/page.tsx`:
+  - Hero image removido do topo do artigo
+  - Capa do jogo movida para o **topo da sidebar** (quadrada, sem cropping)
+  - Sidebar com `position: sticky` (`sidebar-sticky`)
+  - Artigo: badge → nome do jogo → título → data/leitura → markdown → veredito
 
 ### 2026-06-24 (sessão 11)
 - [x] **Fix 500 em todas as rotas `[slug]`** — root cause: `[locale]/layout.tsx` sem `generateStaticParams`; Next.js tentava pre-gerar páginas de rotas filhas sem contexto de locale → crash silencioso em produção

@@ -20,12 +20,14 @@ Site pessoal público de conteúdo sobre boardgames: reviews com nota, artigos e
 | `top10` | `/top10` | Não | Ranking com posição e histórico (↑↓) |
 | `how-to-play` | `/como-jogar` | Não | Guia de regras — diferencial do Regrista |
 
-## Status atual do projeto (2026-06-14)
+## Status atual do projeto (2026-06-24)
 - **Frontend:** Homepage + todas as listagens + review individual — todas conectadas ao Supabase (sem mock data)
-- **Banco:** Supabase conectado e funcionando. Projeto ID `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`. Migration + seed executados. `.env.local` configurado corretamente.
-- **Dados:** 7 jogos, 10 posts (5 reviews, 1 artigo, 3 como-jogar, 1 top10), 5 reviews com sub-scores no banco.
+- **Banco:** Supabase conectado e funcionando. Projeto ID `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`. Migrations + seeds executados. `.env.local` configurado corretamente.
+- **Dados em produção:** 22 jogos, 2 reviews publicadas (Shackleton Base 10.0, PARKS 7.0 pendente de SQL)
+- **Reviews:** layout com capa na sidebar (quadrada, sem cropping), sub-scores em estrelas, ficha técnica sticky
+- **Cards de review:** aspect-ratio 1:1 com objectPosition center top — funciona para imagens quadradas e landscape
 - **i18n:** Roteamento configurado; switcher PT/EN no Header ainda é visual-only
-- **Deploy:** Não iniciado
+- **Deploy:** Vercel ativo em https://o-regrista.vercel.app (deploy automático via git push)
 
 ## Acesso
 - **Leitura:** público, sem autenticação

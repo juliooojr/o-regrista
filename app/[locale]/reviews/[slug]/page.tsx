@@ -5,7 +5,7 @@ import Link from 'next/link'
 import ReactMarkdown from 'react-markdown'
 import { getReviewBySlug, getReviews } from '@/lib/content'
 import {
-  TypeBadge, GameCover, ReviewCard, formatDate, scoreColor, sectionLabel,
+  TypeBadge, ReviewCard, formatDate, scoreColor, sectionLabel,
 } from '@/components/content/shared'
 
 const SCORE_COMPONENT_LABELS: Record<string, string> = {
@@ -74,49 +74,19 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
 
           {/* Conteúdo principal */}
           <article>
-            {(review.cover_url ?? game?.image_url) ? (
-              <div style={{ borderRadius: 8, overflow: 'hidden', background: 'var(--surface)' }}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={review.cover_url ?? game?.image_url ?? ''}
-                  alt={game?.name ?? review.title_pt}
-                  style={{ width: '100%', height: 'auto', display: 'block' }}
-                />
-              </div>
-            ) : (
-              <GameCover
-                coverUrl={null}
-                label={game?.name ?? review.title_pt}
-                height={220}
-              />
-            )}
-
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', margin: '24px 0 16px' }}>
-              <div>
-                <TypeBadge type={review.type} />
-                {game?.name && (
-                  <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 8 }}>
-                    {game.name_pt ?? game.name}
-                  </p>
-                )}
-              </div>
-              <div style={{ textAlign: 'center' }}>
-                <span style={{
-                  fontFamily: "'JetBrains Mono', monospace", fontSize: 48, fontWeight: 700,
-                  color: scoreColor(reviewData.score), lineHeight: 1,
-                }}>
-                  {reviewData.score.toFixed(1)}
-                </span>
-                <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-                  nota final
+            <div style={{ marginBottom: 16 }}>
+              <TypeBadge type={review.type} />
+              {game?.name && (
+                <p style={{ fontSize: 13, color: 'var(--muted)', marginTop: 8 }}>
+                  {game.name_pt ?? game.name}
                 </p>
-              </div>
+              )}
             </div>
 
             <h1 style={{ fontSize: 26, fontWeight: 600, lineHeight: 1.3, marginBottom: 12, color: 'var(--foreground)' }}>
               {review.title_pt}
             </h1>
-            <p style={{ fontSize: 14, color: 'var(--muted-foreground)', marginBottom: 24 }}>
+            <p style={{ fontSize: 14, color: 'var(--muted-foreground)', marginBottom: 28 }}>
               {review.published_at ? formatDate(review.published_at) : ''} · {review.reading_time} min de leitura
             </p>
 
@@ -171,7 +141,23 @@ export default async function ReviewPage({ params }: { params: Promise<{ slug: s
           </article>
 
           {/* Sidebar */}
-          <aside>
+          <aside className="sidebar-sticky">
+            {/* Capa do jogo — quadrada, sem cropping */}
+            {(review.cover_url ?? game?.image_url) && (
+              <div style={{
+                width: '100%', aspectRatio: '1 / 1',
+                borderRadius: 10, overflow: 'hidden',
+                marginBottom: 20, background: 'var(--surface)',
+              }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={review.cover_url ?? game?.image_url ?? ''}
+                  alt={game?.name ?? review.title_pt}
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+                />
+              </div>
+            )}
+
             {/* Sub-scores */}
             {scoreEntries.length > 0 && (
               <div style={{ padding: '16px 18px', background: 'var(--surface)', borderRadius: 10, border: '1px solid var(--border)', marginBottom: 24 }}>

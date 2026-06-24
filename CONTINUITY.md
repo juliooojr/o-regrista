@@ -13,52 +13,31 @@ Leia os arquivos de documentação nesta ordem antes de qualquer coisa:
 4. `SCHEMA.md` — banco de dados Supabase
 5. `TASKS.md` — o que está pendente e o que foi feito
 
-## Estado atual (2026-06-24, sessão 11)
+## Estado atual (2026-06-24, sessão 12)
 
-### ✅ Páginas concluídas
-- **Homepage** — featured post + sidebar recentes + grid reviews + como-jogar
-- **Reviews** — listagem + detalhe com markdown, sub-scores em estrelas, ficha técnica, sidebar
-- **Artigos** — bloqueada com "Em breve 🚧"
-- **Como Jogar** — listagem + detalhe
-- **Sobre** — bio, avatar, stats dinâmicos, WhatsApp
-- **Top 10** — lista principal + páginas dinâmicas por slug (sidebar "Outras listas", ratings BGG+Ludo)
-- **Primeira review** — Shackleton Base, nota 10.0, markdown completo
+### ✅ Reviews publicadas
+- **Shackleton Base** — nota 10.0, slug `shackleton-base-review`, featured = true
+- **PARKS (Second Edition)** — nota 7.0, slug `parks-review` — **SQL gerado, ainda não executado no Supabase**
+
+### ✅ Layout da review — refatorado (sessão 12)
+Página `app/[locale]/reviews/[slug]/page.tsx` com sidebar à direita:
+- **Artigo:** badge → nome do jogo → título → data/leitura → markdown → veredito (sem hero image)
+- **Sidebar (sticky, 280px):** capa do jogo quadrada (aspect-ratio 1:1, sem cropping) → sub-scores em estrelas → nota final → ficha técnica
+
+### ✅ Cards de review — redesenhados (sessão 12)
+`components/content/shared.tsx` — `ReviewCard` usa `aspect-ratio: 1/1` + `objectPosition: center top`. Funciona sem cropping para imagens quadradas e landscape.
 
 ### ✅ Fix 500 em produção — RESOLVIDO (sessão 11)
-Root cause identificado e corrigido: `[locale]/layout.tsx` precisava exportar `generateStaticParams` (padrão next-intl). Sem ele, o Next.js tentava pre-gerar rotas `[slug]` filhas sem contexto de locale → crash silencioso → 500 em produção. Em desenvolvimento (`next dev`) nunca se manifestava.
-
-**Fix aplicado:** `app/[locale]/layout.tsx` agora exporta:
-```ts
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }))
-}
-```
-Commit `91bfa3d`, confirmado 200 em produção.
+Root cause: `[locale]/layout.tsx` sem `generateStaticParams`. Commit `91bfa3d`.
 
 ### ✅ Top 10 Party Games — CÓDIGO PRONTO (sessão 11)
-- `app/[locale]/top10/[slug]/page.tsx` — reescrito sem null bytes, estilo idêntico ao page.tsx
-- `supabase/top10_party_games_seed.sql` — gerado, **ainda não executado em produção**
-- **Ação manual pendente:** executar o SQL no Supabase SQL Editor
-
-**Jogos do seed (IDs `000...0022` a `000...0030`):**
-| Pos | Jogo | BGG ID | ID DB |
-|-----|------|--------|-------|
-| 1 | Codenames | 178900 | 000...0012 |
-| 2 | Passaporte Mundo | 413920 | 000...0022 |
-| 3 | Flip 7 | 420087 | 000...0023 |
-| 4 | Citadels | 478 | 000...0024 |
-| 5 | Telestrations | 46213 | 000...0025 |
-| 6 | Cabanga! (Snailed It!) | 394889 | 000...0026 |
-| 7 | BANG! | 3955 | 000...0027 |
-| 8 | Dobble (Spot it!) | 63268 | 000...0028 |
-| 9 | Imagem & Ação | 13512 | 000...0029 |
-| 10 | Exploding Kittens | 172225 | 000...0030 |
+`supabase/top10_party_games_seed.sql` — **ainda não executado em produção**
 
 ### ✅ Banco de dados (Supabase)
 - Projeto ID: `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`
 - Migrations executadas: `001_initial_schema.sql`, `002_game_ratings.sql`
 - Seeds executados: `top10_seed.sql`, `review_shackleton_base.sql`
-- **Pendente em produção:** `top10_party_games_seed.sql`
+- **Pendentes em produção:** `patch_shackleton_image.sql`, `review_parks_second_edition.sql`, `top10_party_games_seed.sql`
 
 ### ✅ Responsividade e Favicon — CONCLUÍDOS (sessão 9)
 Todas as páginas responsivas via classes CSS em `app/globals.css`.
@@ -76,7 +55,10 @@ Arquivos com null bytes conhecidos:
 - `app/[locale]/artigos/page.tsx`
 - `app/layout.tsx`
 
-(Os demais foram limpos em sessões anteriores.)
+### 💡 Convenção de imagens
+- Sempre usar imagens de `cf.geekdo-images.com`
+- Preferir variante **quadrada 445×445** (`opengraph_left` no path) — evita cropping na sidebar e nos cards
+- Exemplo: `https://cf.geekdo-images.com/XE4S_nXyHVvld2BOrDmA7Q__opengraph_left/img/.../pic7897060.jpg`
 
 ## Próximo passo sugerido
-Criar a **segunda review** — definir o jogo com Julio, escrever o conteúdo em markdown, gerar o SQL seed e publicar.
+Criar a **terceira review** — UUIDs reservados: game `000...0032`, post `100...0032`, review `300...0003`.

@@ -1,7 +1,7 @@
 # O Regrista — Resume para próxima sessão
-# Objetivo: criar a segunda review do site
+# Objetivo: criar a terceira review do site
 
-**Data:** 2026-06-24 | **Última sessão:** 11
+**Data:** 2026-06-24 | **Última sessão:** 12
 
 ---
 
@@ -15,68 +15,67 @@ Leia os docs nesta ordem: `BRAIN.md` → `AGENTS.md` → `DESIGN.md` → `SCHEMA
 
 ---
 
-## O que foi feito na sessão 11 (hoje)
+## O que foi feito na sessão 12 (hoje)
 
-- **Fix crítico em produção:** todas as rotas `[slug]` davam 500. Root cause: `[locale]/layout.tsx` precisava de `generateStaticParams` (padrão next-intl). Corrigido no commit `91bfa3d`.
-- **Top 10 Party Games:** código da página pronto, SQL gerado. **SQL ainda não foi executado em produção** (arquivo: `supabase/top10_party_games_seed.sql`).
+### Review PARKS (Second Edition) — SQL gerado, pronto para publicar
+- `supabase/review_parks_second_edition.sql` — game + post + review com nota 7.0
+  - Slug: `parks-review`
+  - Data: 21/06/2026, reading_time: 3 min
+  - Score components: interacao 2, variabilidade 2, profundidade 2, iconografia 5, vontade 3
+  - Imagem Second Edition: `pic8660069` (445×445, quadrada)
+  - **Ainda não executado em produção**
 
----
+### Patch Shackleton Base — imagem atualizada
+- `supabase/patch_shackleton_image.sql` — UPDATE em `posts` e `games` para a versão quadrada (445×445) do `pic7897060`
+- `supabase/review_shackleton_base.sql` e `top10_seed.sql` — URLs corrigidas nos arquivos fonte
+- **Ainda não executado em produção**
 
-## Estado atual da review existente
-
-Existe **uma review publicada**: Shackleton Base, nota 10.0.
-
-**Estrutura do SQL de uma review** (referência para criar a nova):
-
-```sql
--- 1. Inserir o jogo em `games`
-INSERT INTO games (id, name, name_pt, bgg_id, image_url,
-  min_players, max_players, min_duration, max_duration, min_age,
-  year, designer, weight, bgg_rating, bgg_rank,
-  ludopedia_rating, ludopedia_url, categories, mechanics)
-VALUES ('UUID', 'Nome BGG', 'Nome PT', BGG_ID, 'https://cf.geekdo-images.com/...',
-  MIN, MAX, MIN_DUR, MAX_DUR, MIN_AGE,
-  ANO, 'Designer', WEIGHT, BGG_RATING, BGG_RANK,
-  LUDO_RATING, 'https://ludopedia.com.br/jogo/slug',
-  ARRAY['categoria'], ARRAY['mecanica'])
-ON CONFLICT (id) DO UPDATE SET ...;
-
--- 2. Inserir o post em `posts`
-INSERT INTO posts (id, slug, type, status,
-  title_pt, excerpt_pt, content_pt,
-  cover_url, reading_time, featured, published_at)
-VALUES ('UUID', 'review-slug', 'review', 'published',
-  'Título da Review | O Regrista',
-  'Frase de resumo para cards e SEO',
-  $$ Markdown completo aqui $$,
-  'URL da imagem de capa', LEITURA_MIN, false, NOW());
-
--- 3. Inserir a review em `reviews`
-INSERT INTO reviews (id, post_id, game_id, score, score_components, verdict, recommended_players)
-VALUES ('UUID', 'POST_UUID', 'GAME_UUID', NOTA,
-  '{"interacao": N, "variabilidade": N, "profundidade": N, "iconografia": N, "vontade": N}',
-  'Frase de veredicto', 'X–Y jogadores');
-```
-
-**UUIDs disponíveis para nova review:**
-- Game: `00000000-0000-0000-0000-000000000031` (próximo livre)
-- Post: `10000000-0000-0000-0000-000000000031`
-- Review: `30000000-0000-0000-0000-000000000002`
+### Layout das reviews — refatoração visual
+- **`components/content/shared.tsx`** — `ReviewCard` redesenhado com `aspect-ratio: 1/1` + `objectPosition: center top`. Sem cropping em nenhum formato de capa.
+- **`app/[locale]/reviews/[slug]/page.tsx`** — layout Opção A implementado:
+  - Sem hero image no topo do artigo
+  - Capa do jogo movida para o **topo da sidebar** (quadrada, sem cropping)
+  - Sidebar com `position: sticky`
+  - Artigo começa direto no badge → título → data → texto → veredito
 
 ---
 
-## Estrutura da página de review
+## Estado atual do banco de produção
 
-`app/[locale]/reviews/[slug]/page.tsx` — **não editar**, já está pronta e funcional.
+| SQL | Status |
+|-----|--------|
+| `001_initial_schema.sql` | ✅ executado |
+| `002_game_ratings.sql` | ✅ executado |
+| `top10_seed.sql` | ✅ executado (imagem Shackleton desatualizada até rodar o patch) |
+| `review_shackleton_base.sql` | ✅ executado (imagem desatualizada até rodar o patch) |
+| `top10_party_games_seed.sql` | ⏳ pendente |
+| `patch_shackleton_image.sql` | ⏳ pendente |
+| `review_parks_second_edition.sql` | ⏳ pendente |
 
-O que a página renderiza:
-- Capa do jogo (`cover_url` do post, fallback para `game.image_url`)
-- Score com cor (`scoreColor`) em JetBrains Mono
-- Sub-scores em estrelas ⭐ (5 critérios: interação, variabilidade, profundidade, iconografia, vontade)
-- Conteúdo `content_pt` em **react-markdown** com estilo justificado
-- Ficha técnica: jogadores, duração, ano, designer, peso, BGG link
-- Veredito + jogadores recomendados
-- Sidebar: últimas 3 reviews
+---
+
+## Reviews publicadas
+
+| Jogo | Nota | Slug | Status |
+|------|------|------|--------|
+| Shackleton Base | 10.0 | `shackleton-base-review` | ✅ no ar |
+| PARKS (Second Edition) | 7.0 | `parks-review` | ⏳ SQL pendente |
+
+---
+
+## UUIDs disponíveis para a próxima review (terceira)
+
+- Game: `00000000-0000-0000-0000-000000000032`
+- Post: `10000000-0000-0000-0000-000000000032`
+- Review: `30000000-0000-0000-0000-000000000003`
+
+---
+
+## Estrutura da página de review (atual, pós-sessão 12)
+
+`app/[locale]/reviews/[slug]/page.tsx` — layout com sidebar à direita:
+- **Artigo (coluna principal):** badge de tipo → nome do jogo → título (h1) → data + leitura → conteúdo markdown → veredito
+- **Sidebar (280px, sticky):** capa do jogo quadrada (aspect-ratio 1:1) → sub-scores em estrelas → nota final → ficha técnica
 
 ---
 
@@ -84,50 +83,37 @@ O que a página renderiza:
 
 | Critério | Descrição |
 |----------|-----------|
-| `interacao` | Quão dinâmica e envolvente é a interação entre jogadores |
+| `interacao` | Quão dinâmica é a interação entre jogadores |
 | `variabilidade` | Reconfigurabilidade, replay value |
 | `profundidade` | Complexidade estratégica vs. peso da caixa |
 | `iconografia` | Clareza visual, componentes, iconografia |
 | `vontade` | Vontade de jogar de novo imediatamente |
 
 Nota geral (`score`): 0.0–10.0, uma casa decimal.
-Sub-scores: escala 1–5 (estrelas). Exemplo: `"interacao": 4` = 4 estrelas de 5.
-
-Cor automática do score principal:
-- ≥ 9.0 → verde (`--success`)
-- ≥ 7.5 → accent
-- ≥ 6.0 → foreground
-- ≥ 4.0 → muted
-- < 4.0 → vermelho (`--error`)
+Sub-scores: escala 1–5 (estrelas).
 
 ---
 
 ## Fluxo para criar uma nova review
 
 1. **Escolher o jogo** com Julio
-2. **Pesquisar dados oficiais** no BGG (bgg_id, imagem, weight, rating, rank, designer, ano, jogadores)
-3. **Pesquisar na Ludopedia** (rating, URL)
-4. **Julio escreve ou aprova** o conteúdo em markdown
-5. **Montar o SQL** seguindo o padrão acima
+2. **Pesquisar dados oficiais** no BGG (bgg_id, imagem quadrada, weight, rating, rank, designer, ano, jogadores)
+3. **Pesquisar na Ludopedia** (rating, URL — apenas para referência, não está no schema)
+4. **Julio escreve ou aprova** o conteúdo em markdown (com pequenos erros de sintaxe para soar humano)
+5. **Montar o SQL** seguindo o padrão de `review_parks_second_edition.sql`
 6. **Julio executa o SQL** no Supabase SQL Editor de produção
 7. **Verificar** em https://o-regrista.vercel.app/reviews/[slug]
-
----
-
-## Pendências paralelas (não bloqueiam a review)
-
-- [ ] Executar `supabase/top10_party_games_seed.sql` no Supabase (Top 10 Party Games)
-- [ ] Analytics (backlog)
-- [ ] PT/EN switcher funcional (backlog)
 
 ---
 
 ## Convenções importantes
 
 - Imagens de jogos: **sempre de `cf.geekdo-images.com`** (já liberado no `next.config.ts`)
-- Slugs: kebab-case, ex: `review-wingspan`, `review-brass-birmingham`
+- Preferir imagens **quadradas** (445×445 via `opengraph_left`) — evita cropping na sidebar e nos cards
+- Slugs: kebab-case, ex: `review-wingspan`, `parks-review`
 - Status inicial: `published` (não `draft`)
 - `featured: false` para reviews novas (só o Shackleton Base é featured)
 - Conteúdo `content_pt`: markdown, tom pessoal e direto do Julio
 - Estilos: **inline `style={}`**, sem classes Tailwind no JSX
 - Queries: sempre via `lib/content.ts`, nunca direto no componente
+- `ON CONFLICT` dos posts deve incluir: `reading_time`, `published_at`, `cover_url`, `content_pt`, `title_pt`, `excerpt_pt`, `featured`, `status`

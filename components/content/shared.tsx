@@ -97,13 +97,31 @@ export function GameCover({
 }
 
 export function ReviewCard({ post }: { post: ReviewFull }) {
+  const coverUrl = post.cover_url ?? post.game?.image_url
+  const label = post.game?.name ?? post.title_pt
   return (
     <Link href={`/reviews/${post.slug}`} style={{
       textDecoration: 'none', color: 'inherit', border: '1px solid var(--border)',
       borderRadius: 10, overflow: 'hidden', display: 'block',
       background: 'var(--surface-elevated)', transition: 'border-color 0.15s',
     }}>
-      <GameCover coverUrl={post.cover_url ?? post.game?.image_url} label={post.game?.name ?? post.title_pt} height={180} />
+      {/* Imagem quadrada — padrão para caixas de boardgame */}
+      <div style={{ width: '100%', aspectRatio: '1 / 1', overflow: 'hidden', background: 'var(--surface)', flexShrink: 0 }}>
+        {coverUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={coverUrl}
+            alt={label}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center top', display: 'block' }}
+          />
+        ) : (
+          <div style={{ width: '100%', height: '100%', background: placeholderColor(label), display: 'flex', alignItems: 'flex-end' }}>
+            <span style={{ width: '100%', padding: '6px 8px', background: 'rgba(0,0,0,0.45)', color: '#fff', fontSize: 10, fontWeight: 600, lineHeight: 1.2, letterSpacing: '0.03em' }}>
+              {label}
+            </span>
+          </div>
+        )}
+      </div>
       <div style={{ padding: '12px 14px 14px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 8 }}>
           <TypeBadge type={post.type} />

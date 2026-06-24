@@ -87,7 +87,7 @@ VALUES
 -- Shackleton Base: A Journey to the Moon
 ('00000000-0000-0000-0000-000000000021',
  'Shackleton Base: A Journey to the Moon', 'Shackleton Base: A Journey to the Moon', 408180,
- 'https://cf.geekdo-images.com/XE4S_nXyHVvld2BOrDmA7Q__opengraph/img/X9rcwAYd5T72P_P9D2MbjaklUDY=/0x0:2362x1240/fit-in/1200x630/filters:strip_icc()/pic7897060.jpg',
+ 'https://cf.geekdo-images.com/XE4S_nXyHVvld2BOrDmA7Q__opengraph_left/img/4q19CyWZGc3aXuQzCKzHQGtTRW4=/fit-in/445x445/filters:strip_icc()/pic7897060.jpg',
  1, 4, 60, 120, 14, 2024, 'Fabio Lopiano, Nestore Mangone',
  3.89, ARRAY['eurogame'], ARRAY['worker placement', 'area development', 'variable setup'],
  8.00, 8.10, 'https://ludopedia.com.br/jogo/shackleton-base-a-journey-to-the-moon')
