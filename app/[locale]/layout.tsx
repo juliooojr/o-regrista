@@ -12,6 +12,12 @@ import '@fontsource/inter/500.css'
 import '@fontsource/inter/700.css'
 import '@fontsource/jetbrains-mono/700.css'
 
+// Necessário para next-intl: informa ao Next.js quais locales pre-gerar,
+// garantindo contexto de locale durante a geração estática de rotas filhas.
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
+
 export const metadata: Metadata = {
   title: { default: 'O Regrista', template: '%s | O Regrista' },
   description: 'Reviews, artigos e guias de regras de boardgames por Julio.',
