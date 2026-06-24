@@ -13,76 +13,70 @@ Leia os arquivos de documentação nesta ordem antes de qualquer coisa:
 4. `SCHEMA.md` — banco de dados Supabase
 5. `TASKS.md` — o que está pendente e o que foi feito
 
-## Estado atual (2026-06-19, sessão 9)
+## Estado atual (2026-06-24, sessão 11)
 
 ### ✅ Páginas concluídas
 - **Homepage** — featured post + sidebar recentes + grid reviews + como-jogar
-- **Reviews** — listagem com escala de scores + detalhe com sub-scores em estrelas, markdown, ficha técnica
-- **Artigos** — bloqueada com página "Em breve 🚧"
-- **Como Jogar** — listagem com featured guide + detalhe
-- **Sobre** — bio completa, avatar Supabase Storage, stats dinâmicos, botão WhatsApp
-- **Top 10** — lista principal (10 jogos reais) + sidebar + páginas dinâmicas por slug
-- **Primeira review publicada** — Shackleton Base, nota 10.0, markdown completo
+- **Reviews** — listagem + detalhe com markdown, sub-scores em estrelas, ficha técnica, sidebar
+- **Artigos** — bloqueada com "Em breve 🚧"
+- **Como Jogar** — listagem + detalhe
+- **Sobre** — bio, avatar, stats dinâmicos, WhatsApp
+- **Top 10** — lista principal + páginas dinâmicas por slug (sidebar "Outras listas", ratings BGG+Ludo)
+- **Primeira review** — Shackleton Base, nota 10.0, markdown completo
 
-### ✅ Responsividade — CONCLUÍDA (sessão 9)
-Todas as páginas adaptadas para mobile/tablet via classes CSS em `app/globals.css`.
-Estratégia: inline styles mantidos para cores/visual, layout extraído para classes com media queries.
+### ✅ Fix 500 em produção — RESOLVIDO (sessão 11)
+Root cause identificado e corrigido: `[locale]/layout.tsx` precisava exportar `generateStaticParams` (padrão next-intl). Sem ele, o Next.js tentava pre-gerar rotas `[slug]` filhas sem contexto de locale → crash silencioso → 500 em produção. Em desenvolvimento (`next dev`) nunca se manifestava.
 
-**Breakpoints:** ≤768px (tablet) e ≤480px (mobile estreito)
+**Fix aplicado:** `app/[locale]/layout.tsx` agora exporta:
+```ts
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }))
+}
+```
+Commit `91bfa3d`, confirmado 200 em produção.
 
-**Classes criadas:**
-| Classe | Uso |
-|--------|-----|
-| `.home-main-grid` | Grid 1fr+300px da homepage → 1 coluna no mobile |
-| `.page-sidebar-grid` | Grid 1fr+280-320px com sidebar → 1 coluna no mobile |
-| `.sidebar-sticky` | `position: sticky` → `static` no mobile |
-| `.card-grid-3` | Grid 3 colunas → 2 colunas tablet, 1 mobile |
-| `.card-grid-4` | Grid 4 colunas → 2 colunas tablet, 1 mobile |
-| `.featured-row` | Flex row do destaque → coluna no mobile |
-| `.featured-cover` | Capa 260×260 → 100% largura no mobile |
-| `.featured-guide-row` | Flex row do featured guide → coluna no mobile |
-| `.featured-cover-sm` | Capa 160px → 100% largura no mobile |
-| `.top10-item` | Flex row do item do top10 → wrap no mobile (infos abaixo) |
-| `.top10-info` | Texto do item top10 → flex-basis 100% no mobile |
-| `.stats-grid` | Grid 4 stats → 2 colunas no mobile estreito |
-| `.header-inner` | Header wrapper → wrap no mobile |
-| `.header-nav` | Nav → segunda linha scrollável horizontal no mobile |
+### ✅ Top 10 Party Games — CÓDIGO PRONTO (sessão 11)
+- `app/[locale]/top10/[slug]/page.tsx` — reescrito sem null bytes, estilo idêntico ao page.tsx
+- `supabase/top10_party_games_seed.sql` — gerado, **ainda não executado em produção**
+- **Ação manual pendente:** executar o SQL no Supabase SQL Editor
 
-**Arquivos alterados:**
-- `app/globals.css` (250 linhas)
-- `app/[locale]/page.tsx`
-- `app/[locale]/top10/page.tsx`
-- `app/[locale]/reviews/page.tsx`
-- `app/[locale]/reviews/[slug]/page.tsx`
-- `app/[locale]/como-jogar/page.tsx`
-- `app/[locale]/como-jogar/[slug]/page.tsx`
-- `app/[locale]/sobre/page.tsx`
-- `components/layout/Header.tsx`
-
-### ✅ Favicon — CONCLUÍDO (sessão 9)
-- Fonte: `favicon.png` na raiz (meeple amarelo lendo livro, 1024×1536px)
-- `app/favicon.ico` — ICO multi-size (16/32/48px), gerado com Pillow
-- `app/icon.png` — 512×512px PNG, servido automaticamente pelo Next.js App Router
-- Nenhuma configuração adicional necessária
-
-### ✅ Comportamento global
-- Tema sempre claro ao abrir (sem localStorage — apenas toggle por sessão)
-- Locale padrão PT sem redirecionamento (`localeDetection: false`)
-- Botão EN desabilitado no Header (span cinza, cursor `not-allowed`, tooltip "Em breve")
+**Jogos do seed (IDs `000...0022` a `000...0030`):**
+| Pos | Jogo | BGG ID | ID DB |
+|-----|------|--------|-------|
+| 1 | Codenames | 178900 | 000...0012 |
+| 2 | Passaporte Mundo | 413920 | 000...0022 |
+| 3 | Flip 7 | 420087 | 000...0023 |
+| 4 | Citadels | 478 | 000...0024 |
+| 5 | Telestrations | 46213 | 000...0025 |
+| 6 | Cabanga! (Snailed It!) | 394889 | 000...0026 |
+| 7 | BANG! | 3955 | 000...0027 |
+| 8 | Dobble (Spot it!) | 63268 | 000...0028 |
+| 9 | Imagem & Ação | 13512 | 000...0029 |
+| 10 | Exploding Kittens | 172225 | 000...0030 |
 
 ### ✅ Banco de dados (Supabase)
 - Projeto ID: `zvuwwlzlmnpzlwxfzfrd`, região `sa-east-1`
 - Migrations executadas: `001_initial_schema.sql`, `002_game_ratings.sql`
 - Seeds executados: `top10_seed.sql`, `review_shackleton_base.sql`
+- **Pendente em produção:** `top10_party_games_seed.sql`
 
-### ⚠️ Atenção técnica
-Vários arquivos `.tsx` do projeto têm **null bytes embebidos** em comentários — herança de como foram criados originalmente. Isso não afeta o build do Next.js/Vercel mas causa erros no `tsc --noEmit`. Ao editar esses arquivos via script Python, **sempre usar `git show HEAD:arquivo | tr -d '\000'`** como fonte para evitar truncamento — nunca ler o arquivo do disco e fazer replace direto em Python, pois null bytes podem corromper o resultado.
+### ✅ Responsividade e Favicon — CONCLUÍDOS (sessão 9)
+Todas as páginas responsivas via classes CSS em `app/globals.css`.
+Favicon: `app/favicon.ico` (ICO multi-size) + `app/icon.png` (512×512px).
 
-Arquivos com null bytes conhecidos (pré-existentes, não causam problema no build):
+### ✅ Comportamento global
+- Tema sempre claro ao abrir (sem localStorage)
+- Locale padrão PT sem redirecionamento (`localeDetection: false`)
+- Botão EN desabilitado no Header
+
+### ⚠️ Atenção técnica — null bytes
+Alguns arquivos `.tsx` têm null bytes embebidos (herança da criação original). Não afetam o build, mas corrompem edições em Python. Ao editar via script: **sempre usar `git show HEAD:arquivo | tr -d '\000'`** como fonte.
+
+Arquivos com null bytes conhecidos:
 - `app/[locale]/artigos/page.tsx`
-- `app/[locale]/como-jogar/page.tsx` (limpo na sessão 9)
-- `app/[locale]/sobre/page.tsx` (limpo na sessão 9)
 - `app/layout.tsx`
 
+(Os demais foram limpos em sessões anteriores.)
+
 ## Próximo passo sugerido
-Retomar o **Top 10 Party Games** (definir jogos com Julio) ou atacar o **backlog de analytics**.
+Criar a **segunda review** — definir o jogo com Julio, escrever o conteúdo em markdown, gerar o SQL seed e publicar.

@@ -1,8 +1,9 @@
 # O Regrista — TASKS
 
-## Sessão 10 — Pendente
+## Pendente
 
-*(nenhum item pendente desta sessão)*
+- [ ] **Executar SQL no Supabase** — rodar `supabase/top10_party_games_seed.sql` no SQL Editor de produção para popular os 10 party games
+- [ ] **Segunda review** — escolher jogo + escrever conteúdo + SQL seed
 
 ## Backlog (por prioridade)
 
@@ -17,6 +18,14 @@
 - [ ] **Como Jogar** — criar guias reais de regras
 
 ## Concluído
+
+### 2026-06-24 (sessão 11)
+- [x] **Fix 500 em todas as rotas `[slug]`** — root cause: `[locale]/layout.tsx` sem `generateStaticParams`; Next.js tentava pre-gerar páginas de rotas filhas sem contexto de locale → crash silencioso em produção
+  - `app/[locale]/layout.tsx` — adicionado `export function generateStaticParams()` retornando `routing.locales.map(locale => ({ locale }))` (padrão obrigatório do next-intl)
+  - Commit `91bfa3d` — deploy automático via Vercel, confirmado 200 em `/top10/meu-top-10-de-todos-os-tempos` e `/top10/top-10-party-games`
+  - Nota: localmente não se manifestava (`next dev` nunca pre-gera estático)
+- [x] **Reescrita limpa de `[slug]/page.tsx`** (sessão anterior completada) — 0 null bytes, estilo idêntico ao `page.tsx`, sidebar "Outras listas", ratings BGG + Ludo, sem badge "NOVO"
+- [x] **`supabase/top10_party_games_seed.sql`** gerado — pronto para execução manual no Supabase
 
 ### 2026-06-19 (sessão 10)
 - [x] **Top 10 Party Games** — 10 jogos definidos pelo Julio, dados oficiais coletados via BGG, SQL gerado
